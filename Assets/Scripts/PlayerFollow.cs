@@ -16,7 +16,7 @@ public class PlayerFollow : MonoBehaviour
     {
         if (player == null) return;
 
-        // Lock movement to XY only (ignore Z)
+        // Lock movement to XY only
         Vector2 currentPos = transform.position;
         Vector2 targetPos = player.position;
 
