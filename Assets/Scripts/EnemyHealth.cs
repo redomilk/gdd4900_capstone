@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
+    public GameObject oxygenBubblePrefab;
+
     public float maxHealth = 30f;
     public float health;
 
@@ -24,6 +26,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Die()
     {
         // drop oxygen bubble
+        if (oxygenBubblePrefab != null)
+            Instantiate(oxygenBubblePrefab, transform.position, Quaternion.identity);
+
         Destroy(gameObject);
     }
 }
