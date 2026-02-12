@@ -50,8 +50,8 @@ public class PauseMenu : MonoBehaviour
             foreach (var b in disableThese)
                 if (b != null) b.enabled = false;
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.None;
     }
 
     public void Resume()
@@ -67,8 +67,8 @@ public class PauseMenu : MonoBehaviour
 
         if (playerInput != null) playerInput.enabled = true;
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void RestartScene()
@@ -79,6 +79,10 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }
