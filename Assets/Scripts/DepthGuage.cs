@@ -1,16 +1,27 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DepthGuage : MonoBehaviour
+public class DepthGauge : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("References")]
+    public Transform player;
+    public Transform depthMarker;
+    public Slider depthSlider;
+
+    float startingDepth;
+
     void Start()
     {
-        
+        startingDepth = Mathf.Abs(player.position.y - depthMarker.position.y);
+        depthSlider.value = 0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        float currentDepth = Mathf.Abs(player.position.y - depthMarker.position.y);
+
+        float normalized = 1f - Mathf.Clamp01(currentDepth / startingDepth);
+
+        depthSlider.value = normalized;
     }
 }

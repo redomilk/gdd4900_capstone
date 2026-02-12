@@ -109,4 +109,13 @@ public class PlayerStats : MonoBehaviour
         oxygen = Mathf.Clamp(oxygen + amount, 0f, maxOxygen);
         GameEvents.OnOxygenChanged?.Invoke(oxygen, maxOxygen);
     }
+
+    public bool TrySpendOxygen(float cost)
+    {
+        if (cost <= 0f) return true;
+        if (oxygen < cost) return false;
+
+        ModifyOxygen(-cost);
+        return true;
+    }
 }

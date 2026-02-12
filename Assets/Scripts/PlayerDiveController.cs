@@ -14,7 +14,7 @@ public class PlayerDiveController : MonoBehaviour
     public float entrySinkTime = 0.4f;     // how long to sink before swim control
     public float entrySinkGravity = 0.8f;  // gravity while sinking
     public float entrySinkDamping = 4f;    // damping while sinking
-    public float entrySinkImpulse = 3f;    // pro tip: extra downward impulse on entry (0 = off)
+    public float entrySinkImpulse = 3f;    // extra downward impulse on entry (0 = off)
 
     [Header("Swim Movement (Water Only)")]
     public float swimAcceleration = 35f;
@@ -25,13 +25,36 @@ public class PlayerDiveController : MonoBehaviour
     [Header("Optional Upward Drift (0 = off)")]
     public float upwardDriftForce = 0f; // try 0.5 - 2 for gentle float up
 
+    [Header("Swim Boost")]
+    public float boostCooldown = 0.6f;   // time between boosts
+    public float boostDuration = 0.25f;  // how long boost "wins" over swim
+    public float boostMaxSpeed = 12f;    // speed during boost (separate from normal max speeds)
+    public float boostDamping = 0f;      // damping while boosting (0 = preserve speed)
+
+    [Header("Boost Oxygen Cost (uses PlayerStats)")]
+    public float boostOxygenCost = 20f;
+
     Rigidbody2D rb;
+    PlayerStats stats;
+
     bool inWater;
 
+    // Entry sink
     bool sinking;
     float sinkTimer;
 
-    void Awake() => rb = GetComponent<Rigidbody2D>();
+    // Boost state
+    bool boosting;
+    float boostTimeLeft;
+    float boostTimer;
+    float savedDamping;
+    Vector2 lastInputDir = Vector2.down; // default direction if no input yet
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        stats = GetComponent<PlayerStats>(); // expects PlayerStats on same GameObject
+    }
 
     void OnEnable()
     {
@@ -55,6 +78,8 @@ public class PlayerDiveController : MonoBehaviour
     {
         if (!inWater) return;
 
+        boostTimer -= Time.fixedDeltaTime;
+
         // Entry sink phase: no swim control yet, let the player sink a bit
         if (sinking)
         {
@@ -63,8 +88,6 @@ public class PlayerDiveController : MonoBehaviour
             if (sinkTimer <= 0f)
             {
                 sinking = false;
-
-                // Switch to normal swim physics
                 rb.gravityScale = waterGravityScale;
                 rb.linearDamping = waterDamping;
             }
@@ -72,18 +95,75 @@ public class PlayerDiveController : MonoBehaviour
             return;
         }
 
-        // Normal swim
         Vector2 input = GetMoveInput();
-        ApplySwimMovement(input);
+
+        // Remember last non-zero direction for boosting
+        if (input.sqrMagnitude > 0f)
+            lastInputDir = input.normalized;
+
+        // Boost input can happen anytime in water (except sink phase)
+        HandleBoost(input);
+
+        if (boosting)
+        {
+            boostTimeLeft -= Time.fixedDeltaTime;
+
+            if (boostTimeLeft <= 0f)
+            {
+                boosting = false;
+
+                // restore normal water damping (or saved value if you prefer)
+                rb.linearDamping = waterDamping;
+            }
+
+            // While boosting: DO NOT apply normal swim movement/clamps
+            ClampVelocity(boostMaxSpeed, boostMaxSpeed);
+        }
+        else
+        {
+            // Normal swim
+            ApplySwimMovement(input);
+        }
 
         if (upwardDriftForce > 0f)
             rb.AddForce(Vector2.up * upwardDriftForce, ForceMode2D.Force);
+    }
+
+    void HandleBoost(Vector2 input)
+    {
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && boostTimer <= 0f)
+        {
+            // Spend oxygen (and fail if not enough)
+            if (boostOxygenCost > 0f)
+            {
+                if (stats == null) return; // no stats -> no oxygen -> disallow boost
+                if (!stats.TrySpendOxygen(boostOxygenCost)) return;
+            }
+
+            Vector2 boostDir = (input.sqrMagnitude > 0f) ? input.normalized : lastInputDir;
+            if (boostDir.sqrMagnitude < 0.0001f) boostDir = Vector2.down;
+
+            boosting = true;
+            boostTimeLeft = boostDuration;
+
+            // Save/override damping so water drag doesn't kill the dash
+            savedDamping = rb.linearDamping;
+            rb.linearDamping = boostDamping;
+
+            // Immediate dash snap
+            rb.linearVelocity = boostDir * boostMaxSpeed;
+
+            boostTimer = boostCooldown;
+        }
     }
 
     void EnterAir()
     {
         inWater = false;
         sinking = false;
+        boosting = false;
 
         rb.gravityScale = gravityScaleAir;
         rb.linearDamping = 0f;
@@ -102,6 +182,8 @@ public class PlayerDiveController : MonoBehaviour
         // Start sink phase
         sinking = true;
         sinkTimer = entrySinkTime;
+
+        boosting = false;
 
         rb.gravityScale = entrySinkGravity;
         rb.linearDamping = entrySinkDamping;
@@ -143,8 +225,13 @@ public class PlayerDiveController : MonoBehaviour
         }
 
         // Clamp speed per-axis so vertical feels as free as horizontal
-        float clampedX = Mathf.Clamp(rb.linearVelocity.x, -maxHorizontalSpeed, maxHorizontalSpeed);
-        float clampedY = Mathf.Clamp(rb.linearVelocity.y, -maxVerticalSpeed, maxVerticalSpeed);
+        ClampVelocity(maxHorizontalSpeed, maxVerticalSpeed);
+    }
+
+    void ClampVelocity(float maxX, float maxY)
+    {
+        float clampedX = Mathf.Clamp(rb.linearVelocity.x, -maxX, maxX);
+        float clampedY = Mathf.Clamp(rb.linearVelocity.y, -maxY, maxY);
         rb.linearVelocity = new Vector2(clampedX, clampedY);
     }
 }
