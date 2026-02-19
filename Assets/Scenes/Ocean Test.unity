@@ -29253,7 +29253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b18c773415699742bf73a0d1d1f7b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoreTEst
-  nearby: 0
 --- !u!1001 &1580086483
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30404,6 +30403,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2925076533132280207, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
+      propertyPath: swimAcceleration
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 8352037513527971645, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
       propertyPath: m_Name
       value: Player Character
