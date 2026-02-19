@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Assets/FMODBanks/AbyssDweller/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639070790829248226
+  lastModified: 639070935879641096
   FileSizes:
   - Name: Desktop
     Value: 6920512
@@ -42,7 +42,7 @@ MonoBehaviour:
   - {fileID: -5549777051645858098}
   StringsBanks:
   - {fileID: 5597171384720267503}
-  cacheTime: 639070790829700491
+  cacheTime: 639070935879665710
   cacheVersion: 131635
 --- !u!114 &5597171384720267503
 MonoBehaviour:
@@ -59,7 +59,7 @@ MonoBehaviour:
   Path: Assets/FMODBanks/AbyssDweller/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639070790829700491
+  lastModified: 639070935879665710
   FileSizes:
   - Name: Desktop
     Value: 764
