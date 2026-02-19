@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{e4bf29d0-94e4-4585-b362-ddc06981c424}">
+		<property name="assetPath">
+			<value>Music/sergepavkinmusic-deep-in-the-ocean-116172.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>539.08897959183673</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{f5571a43-6111-476a-ad68-9a1fe2fa1931}</destination>
+		</relationship>
+	</object>
+</objects>
