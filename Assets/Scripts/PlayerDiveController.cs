@@ -168,7 +168,7 @@ public class PlayerDiveController : MonoBehaviour
         if (boostParticles != null)
         {
             // Point particles opposite to boost direction
-            Debug.Log("Playing particles");
+            //Debug.Log("Playing particles");
             boostParticles.transform.rotation = Quaternion.LookRotation(Vector3.forward, -boostDir);
             boostParticles.Play();
         }

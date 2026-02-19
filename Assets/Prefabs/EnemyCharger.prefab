@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   oxygenBubblePrefab: {fileID: 6324923782049190060, guid: 285d4e15be37f40ea9e1a7719b3f783c, type: 3}
+  scrapPrefab: {fileID: 1005121730525698521, guid: 179c9a85e4e0ba041b66db0982785aad, type: 3}
   maxHealth: 30
   health: 0
 --- !u!50 &2483688707727846022
@@ -212,6 +213,7 @@ MonoBehaviour:
   player: {fileID: 0}
   speed: 2
   stopDistance: 0.5
+  followDistance: 5
 --- !u!58 &7833394064868162682
 CircleCollider2D:
   m_ObjectHideFlags: 0

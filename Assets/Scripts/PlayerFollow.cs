@@ -7,15 +7,16 @@ public class PlayerFollow : MonoBehaviour
     public float stopDistance = 0.5f;
     public float followDistance = 5f;
 
-    void Start()
-    {
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-    }
-
     void Update()
     {
-        if (player == null) return;
+        // Keep trying to find player if reference is missing
+        if (player == null)
+        {
+            GameObject found = GameObject.FindGameObjectWithTag("Player");
+            Debug.Log($"Looking for player, found: {found}");
+            if (found != null) player = found.transform;
+            return;
+        }
 
         Vector2 currentPos = transform.position;
         Vector2 targetPos = player.position;

@@ -10,6 +10,9 @@ public class PlayerStats : MonoBehaviour
     public float maxOxygen = 100f;
     public float oxygen;
 
+    [Header("Resources")]
+    public int scrapCount = 0;
+
     public float oxygenDrainPerSecond = 8f;       // while in water
     public float oxygenRegenPerSecond = 30f;      // while in air OR air pocket
     public float drowningDamagePerSecond = 1f;   // when oxygen == 0 while in water
