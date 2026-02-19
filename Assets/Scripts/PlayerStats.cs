@@ -11,8 +11,8 @@ public class PlayerStats : MonoBehaviour
     public float oxygen;
 
     public float oxygenDrainPerSecond = 8f;       // while in water
-    public float oxygenRegenPerSecond = 20f;      // while in air OR air pocket (set 0 to disable)
-    public float drowningDamagePerSecond = 10f;   // when oxygen == 0 while in water
+    public float oxygenRegenPerSecond = 30f;      // while in air OR air pocket
+    public float drowningDamagePerSecond = 1f;   // when oxygen == 0 while in water
 
     bool inWater;
     bool inAirPocket;

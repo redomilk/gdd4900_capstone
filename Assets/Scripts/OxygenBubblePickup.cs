@@ -17,7 +17,7 @@ public class OxygenBubblePickup : MonoBehaviour
         if (player == null) return;
 
         player.ModifyOxygen(oxygenRestore);
-
+        Debug.Log("Bubble collided");
         Destroy(gameObject);
     }
 }

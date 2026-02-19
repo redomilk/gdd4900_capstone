@@ -34,6 +34,9 @@ public class PlayerDiveController : MonoBehaviour
     [Header("Boost Oxygen Cost (uses PlayerStats)")]
     public float boostOxygenCost = 20f;
 
+    [Header("Boost Particles")]
+    public ParticleSystem boostParticles;
+
     Rigidbody2D rb;
     PlayerStats stats;
 
@@ -49,6 +52,7 @@ public class PlayerDiveController : MonoBehaviour
     float boostTimer;
     float savedDamping;
     Vector2 lastInputDir = Vector2.down; // default direction if no input yet
+    bool boostQueued; //tracks if boost was pressed
 
     void Awake()
     {
@@ -77,6 +81,9 @@ public class PlayerDiveController : MonoBehaviour
     void FixedUpdate()
     {
         if (!inWater) return;
+        
+        //rotate to follow only in water
+        RotateTowardMouse();
 
         boostTimer -= Time.fixedDeltaTime;
 
@@ -129,33 +136,41 @@ public class PlayerDiveController : MonoBehaviour
             rb.AddForce(Vector2.up * upwardDriftForce, ForceMode2D.Force);
     }
 
+    void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+            boostQueued = true;
+    }
+
     void HandleBoost(Vector2 input)
     {
-        if (Keyboard.current == null) return;
+        if (!boostQueued) return;
+        boostQueued = false;
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && boostTimer <= 0f)
+        if (boostTimer > 0f) return;
+
+        if (boostOxygenCost > 0f)
         {
-            // Spend oxygen (and fail if not enough)
-            if (boostOxygenCost > 0f)
-            {
-                if (stats == null) return; // no stats -> no oxygen -> disallow boost
-                if (!stats.TrySpendOxygen(boostOxygenCost)) return;
-            }
+            if (stats == null) return;
+            if (!stats.TrySpendOxygen(boostOxygenCost)) return;
+        }
 
-            Vector2 boostDir = (input.sqrMagnitude > 0f) ? input.normalized : lastInputDir;
-            if (boostDir.sqrMagnitude < 0.0001f) boostDir = Vector2.down;
+        // Use keyboard direction if held, otherwise face direction
+        Vector2 boostDir = input.sqrMagnitude > 0f ? input.normalized : (Vector2)transform.up;
 
-            boosting = true;
-            boostTimeLeft = boostDuration;
+        boosting = true;
+        boostTimeLeft = boostDuration;
+        savedDamping = rb.linearDamping;
+        rb.linearDamping = boostDamping;
+        rb.linearVelocity = boostDir * boostMaxSpeed;
+        boostTimer = boostCooldown;
 
-            // Save/override damping so water drag doesn't kill the dash
-            savedDamping = rb.linearDamping;
-            rb.linearDamping = boostDamping;
-
-            // Immediate dash snap
-            rb.linearVelocity = boostDir * boostMaxSpeed;
-
-            boostTimer = boostCooldown;
+        if (boostParticles != null)
+        {
+            // Point particles opposite to boost direction
+            Debug.Log("Playing particles");
+            boostParticles.transform.rotation = Quaternion.LookRotation(Vector3.forward, -boostDir);
+            boostParticles.Play();
         }
     }
 
@@ -233,5 +248,13 @@ public class PlayerDiveController : MonoBehaviour
         float clampedX = Mathf.Clamp(rb.linearVelocity.x, -maxX, maxX);
         float clampedY = Mathf.Clamp(rb.linearVelocity.y, -maxY, maxY);
         rb.linearVelocity = new Vector2(clampedX, clampedY);
+    }
+
+    void RotateTowardMouse()
+    {
+        Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 direction = mouseWorld - (Vector2)transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
     }
 }
