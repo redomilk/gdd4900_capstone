@@ -179,3 +179,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrapPickup
   scrapValue: 10
+  fallSpeed: 0.5
+  rayDistance: 0.5
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8

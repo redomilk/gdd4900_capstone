@@ -5,30 +5,37 @@ using UnityEngine.InputSystem;
 public class ExtractProcess : MonoBehaviour
 {
     [SerializeField] private string playerTag = "Player";
+    [SerializeField] private string hubSceneName = "HUB";
     private bool playerInZone = false;
 
     void Update()
     {
         if (playerInZone && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            RestartLevel();
+            Extract();
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(playerTag))
-            playerInZone = true;
+        if (!other.CompareTag(playerTag)) return;
+        playerInZone = true;
+        if (PlayerHUD.instance != null)
+            PlayerHUD.instance.ShowPrompt("Press E to escape");
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag(playerTag))
-            playerInZone = false;
+        if (!other.CompareTag(playerTag)) return;
+        playerInZone = false;
+        if (PlayerHUD.instance != null)
+            PlayerHUD.instance.HidePrompt();
     }
 
-    private void RestartLevel()
+    private void Extract()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (PlayerHUD.instance != null)
+            PlayerHUD.instance.HidePrompt();
+        SceneManager.LoadScene(hubSceneName);
     }
 }

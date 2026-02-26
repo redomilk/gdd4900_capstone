@@ -5,9 +5,6 @@ using TMPro;
 
 public class CorePickup : MonoBehaviour
 {
-    [Header("UI")]
-    public TextMeshPro promptText;
-
     [Header("New Light")]
     public float pointLightRadius = 6f;
     public float pointLightIntensity = 1.2f;
@@ -16,25 +13,22 @@ public class CorePickup : MonoBehaviour
     bool playerNearby;
     bool collected;
     bool collectQueued;
+    GameObject player;
 
     void Start()
     {
-        if (promptText != null) promptText.gameObject.SetActive(false);
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
         if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
             collectQueued = true;
-            Debug.Log($"CorePickup: E queued, nearby:{playerNearby}, collected:{collected}");
-        }
 
         if (collected) return;
 
         if (playerNearby && collectQueued)
         {
-            Debug.Log("CorePickup: Calling Collect!");
             collectQueued = false;
             Collect();
         }
@@ -44,24 +38,24 @@ public class CorePickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerNearby = true;
-        if (promptText != null) promptText.gameObject.SetActive(true);
+        if (PlayerHUD.instance != null)
+            PlayerHUD.instance.ShowPrompt("Press E to collect");
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
         playerNearby = false;
-        if (promptText != null) promptText.gameObject.SetActive(false);
+        if (PlayerHUD.instance != null)
+            PlayerHUD.instance.HidePrompt();
     }
 
     void Collect()
     {
         collected = true;
-        if (promptText != null) promptText.gameObject.SetActive(false);
-
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (PlayerHUD.instance != null)
+            PlayerHUD.instance.HidePrompt();
         if (player != null) UpgradeLight(player);
-
         Destroy(gameObject);
     }
 
@@ -69,19 +63,15 @@ public class CorePickup : MonoBehaviour
     {
         Flashlight flashlightScript = player.GetComponent<Flashlight>();
         if (flashlightScript == null || flashlightScript.flashlight == null) return;
-
         Light2D light = flashlightScript.flashlight;
         light.lightType = Light2D.LightType.Point;
         light.pointLightOuterRadius = pointLightRadius;
         light.pointLightInnerRadius = pointLightRadius * 0.4f;
         light.intensity = pointLightIntensity;
         light.color = pointLightColor;
-
-        // Also detach from player rotation so it stays circular
         light.transform.SetParent(player.transform);
         light.transform.localPosition = Vector3.zero;
         light.transform.localRotation = Quaternion.identity;
-
         light.enabled = false;
     }
 }
