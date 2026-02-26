@@ -40,18 +40,15 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         if (playerInput != null) playerInput.enabled = false;
-
-        if (pausePanel != null) pausePanel.SetActive(true);
-
+        if (pausePanel != null)
+            pausePanel.SetActive(true);
+        else
+            Debug.LogWarning("pausePanel is null on Pause!"); // add this
         Time.timeScale = 0f;
         isPaused = true;
-
         if (disableThese != null)
             foreach (var b in disableThese)
                 if (b != null) b.enabled = false;
-
-        //Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.None;
     }
 
     public void Resume()
@@ -73,6 +70,7 @@ public class PauseMenu : MonoBehaviour
 
     public void RestartScene()
     {
+        Resume();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

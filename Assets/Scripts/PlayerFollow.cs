@@ -13,7 +13,7 @@ public class PlayerFollow : MonoBehaviour
         if (player == null)
         {
             GameObject found = GameObject.FindGameObjectWithTag("Player");
-            Debug.Log($"Looking for player, found: {found}");
+            //Debug.Log($"Looking for player, found: {found}");
             if (found != null) player = found.transform;
             return;
         }

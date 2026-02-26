@@ -55,7 +55,17 @@ public class CorePickup : MonoBehaviour
         collected = true;
         if (PlayerHUD.instance != null)
             PlayerHUD.instance.HidePrompt();
-        if (player != null) UpgradeLight(player);
+
+        // Re-find player in case cached reference went stale
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            Debug.Log("Player found, upgrading light");
+            UpgradeLight(player);
+        }
+        else Debug.LogWarning("Player is null in Collect!");
         Destroy(gameObject);
     }
 

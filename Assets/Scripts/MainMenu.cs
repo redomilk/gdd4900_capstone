@@ -2,12 +2,11 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject menuCanvas;
-    [SerializeField] private GameObject player;
-
+    public GameObject menuCanvas;
+    public GameObject player;
     [Header("HUD Elements")]
-    [SerializeField] private GameObject depthGauge;
-    [SerializeField] private GameObject resourceBars;
+    public GameObject depthGauge;
+    public GameObject resourceBars;
 
     private bool gameStarted = false;
 
