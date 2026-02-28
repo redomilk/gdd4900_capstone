@@ -7,6 +7,8 @@ TagManager:
   - WaterSurface
   - Water
   - Enemy
+  - Enemy Bullet
+  - Player Bullet
   layers:
   - Default
   - TransparentFX
