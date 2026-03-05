@@ -79,18 +79,25 @@ public class PlayerDiveController : MonoBehaviour
         GameEvents.OnPlayerStartFalling?.Invoke();
     }
 
-    public void ApplyKnockback(float duration) 
+    public void ApplyKnockback(float duration)
     {
         knockbackTimer = duration;
-        boosting = false;  // cancel boost if active
+        boosting = false;
+        rb.linearDamping = waterDamping;  // ensure damping is active during knockback
     }
 
     void FixedUpdate()
     {
-        // Skip all movement during knockback
-        if (knockbackTimer > 0f) 
+        if (knockbackTimer > 0f)
         {
             knockbackTimer -= Time.fixedDeltaTime;
+
+            //bleed off knockback velocity so it doesn't carry forever
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, Time.fixedDeltaTime * waterDamping);
+
+            if (knockbackTimer <= 0f)
+                rb.linearVelocity = Vector2.zero;  // hard reset when knockback ends
+
             return;
         }
 
