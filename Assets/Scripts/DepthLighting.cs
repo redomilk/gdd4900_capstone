@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -16,6 +17,9 @@ public class DepthLighting : MonoBehaviour
     [Range(0f, 1f)] public float shallowIntensity = 1.5f;
     [Range(0f, 1f)] public float deepIntensity = 0.05f;
 
+    [Header("Options Override")]
+    [Range(0f, 1f)] public float darknessStrength = 1f; // 1 = full darkness, 0 = always shallow
+
     Light2D globalLight;
 
     void Awake()
@@ -28,6 +32,7 @@ public class DepthLighting : MonoBehaviour
         if (depthMarker == null || globalLight == null) return;
 
         float t = Mathf.Clamp01(Mathf.InverseLerp(shallowDepth, deepDepth, depthMarker.position.y));
+        t *= darknessStrength;   // slider scales how dark it gets
 
         globalLight.color = Color.Lerp(shallowColor, deepColor, t);
         globalLight.intensity = Mathf.Lerp(shallowIntensity, deepIntensity, t);

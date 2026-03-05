@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class Bullet : MonoBehaviour
 {
     public float damage = 10f;
@@ -15,11 +14,10 @@ public class Bullet : MonoBehaviour
         PlayerStats player = other.GetComponent<PlayerStats>();
         if (player != null)
         {
-            player.TakeDamage(damage);
+            player.TakeDamageWithKnockback(damage, transform.position); 
             Destroy(gameObject);
         }
 
-        // Destroy on wall contact
         if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
             Destroy(gameObject);
     }

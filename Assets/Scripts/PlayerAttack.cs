@@ -1,27 +1,34 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Melee")]
     public GameObject slashPrefab;
     public float slashDistance = 0.8f;
+
     [Header("Ranged")]
     public GameObject bulletPrefab;
     public Transform firePoint;
     public float bulletSpeed = 6f;
+
     [Header("General")]
     public float attackCooldown = 0.25f;
     public int currentWeapon = 0;
+
     float cooldown;
     Camera cam;
+
     void Awake()
     {
         cam = Camera.main;
     }
+
     void Update()
     {
         cooldown -= Time.deltaTime;
         if (cooldown > 0f) return;
+
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             AttackRanged();
@@ -33,6 +40,7 @@ public class PlayerAttack : MonoBehaviour
             cooldown = attackCooldown;
         }
     }
+
     void AttackMelee()
     {
         Vector3 mouseWorld = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -40,8 +48,11 @@ public class PlayerAttack : MonoBehaviour
         Vector2 dir = (mouseWorld - transform.position).normalized;
         Vector3 spawnPos = transform.position + (Vector3)(dir * slashDistance);
         GameObject slash = Instantiate(slashPrefab, spawnPos, Quaternion.identity);
-        slash.GetComponent<SlashAttack>().Initialize(dir);
+        SlashAttack slashAttack = slash.GetComponent<SlashAttack>();
+        slashAttack.Initialize(dir);
+        slashAttack.SetPlayerPosition(transform.position);
     }
+
     void AttackRanged()
     {
         if (bulletPrefab == null || firePoint == null) return;

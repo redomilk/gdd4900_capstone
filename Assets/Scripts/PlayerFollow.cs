@@ -7,13 +7,24 @@ public class PlayerFollow : MonoBehaviour
     public float stopDistance = 0.5f;
     public float followDistance = 5f;
 
+    float knockbackTimer;
+
+    public void ApplyKnockback(float duration) 
+    {
+        knockbackTimer = duration;
+    }
+
     void Update()
     {
-        // Keep trying to find player if reference is missing
+        if (knockbackTimer > 0f)  //skip movement while knocked back
+        {
+            knockbackTimer -= Time.deltaTime;
+            return;
+        }
+
         if (player == null)
         {
             GameObject found = GameObject.FindGameObjectWithTag("Player");
-            //Debug.Log($"Looking for player, found: {found}");
             if (found != null) player = found.transform;
             return;
         }

@@ -12,25 +12,31 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Resources")]
     public int scrapCount = 0;
+    public float oxygenDrainPerSecond = 8f;
+    public float oxygenRegenPerSecond = 30f;
+    public float drowningDamagePerSecond = 1f;
 
-    public float oxygenDrainPerSecond = 8f;       // while in water
-    public float oxygenRegenPerSecond = 30f;      // while in air OR air pocket
-    public float drowningDamagePerSecond = 1f;   // when oxygen == 0 while in water
+    [Header("Knockback")]
+    public float knockbackForce = 6f;
+    public float knockbackDuration = 0.15f;
 
     bool inWater;
     bool inAirPocket;
+
+    Rigidbody2D rb;
+    float knockbackTimer;
 
     void Awake()
     {
         health = maxHealth;
         oxygen = maxOxygen;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void OnEnable()
     {
         GameEvents.OnPlayerHitWater += OnEnterWater;
         GameEvents.OnPlayerLeftWater += OnExitWater;
-
         GameEvents.OnPlayerEnterAirPocket += OnEnterAirPocket;
         GameEvents.OnPlayerExitAirPocket += OnExitAirPocket;
     }
@@ -39,14 +45,12 @@ public class PlayerStats : MonoBehaviour
     {
         GameEvents.OnPlayerHitWater -= OnEnterWater;
         GameEvents.OnPlayerLeftWater -= OnExitWater;
-
         GameEvents.OnPlayerEnterAirPocket -= OnEnterAirPocket;
         GameEvents.OnPlayerExitAirPocket -= OnExitAirPocket;
     }
 
     void Start()
     {
-        // Push initial UI state
         GameEvents.OnHealthChanged?.Invoke(health, maxHealth);
         GameEvents.OnOxygenChanged?.Invoke(oxygen, maxOxygen);
     }
@@ -55,19 +59,16 @@ public class PlayerStats : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
-        // Air pocket overrides everything: always refill oxygen while inside
         if (inAirPocket)
         {
             if (oxygenRegenPerSecond > 0f)
                 ModifyOxygen(+oxygenRegenPerSecond * dt);
-
             return;
         }
 
         if (inWater)
         {
             ModifyOxygen(-oxygenDrainPerSecond * dt);
-
             if (oxygen <= 0f)
                 TakeDamage(drowningDamagePerSecond * dt);
         }
@@ -80,27 +81,35 @@ public class PlayerStats : MonoBehaviour
 
     void OnEnterWater() => inWater = true;
     void OnExitWater() => inWater = false;
-
     void OnEnterAirPocket() => inAirPocket = true;
     void OnExitAirPocket() => inAirPocket = false;
-
-    // --------- Public API (for enemies, hazards, augments later) ---------
 
     public void TakeDamage(float amount)
     {
         if (amount <= 0f) return;
-
         health = Mathf.Max(0f, health - amount);
         GameEvents.OnHealthChanged?.Invoke(health, maxHealth);
-
         if (health <= 0f)
             GameEvents.OnPlayerDied?.Invoke();
+    }
+
+    public void TakeDamageWithKnockback(float amount, Vector2 sourcePosition)
+    {
+        TakeDamage(amount);
+
+        if (rb == null) return;
+
+        // Notify player movement to pause briefly
+        PlayerDiveController pm = GetComponent<PlayerDiveController>();
+        if (pm != null) pm.ApplyKnockback(knockbackDuration);
+
+        Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
+        rb.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
     }
 
     public void Heal(float amount)
     {
         if (amount <= 0f) return;
-
         health = Mathf.Min(maxHealth, health + amount);
         GameEvents.OnHealthChanged?.Invoke(health, maxHealth);
     }
@@ -108,7 +117,6 @@ public class PlayerStats : MonoBehaviour
     public void ModifyOxygen(float amount)
     {
         if (amount == 0f) return;
-
         oxygen = Mathf.Clamp(oxygen + amount, 0f, maxOxygen);
         GameEvents.OnOxygenChanged?.Invoke(oxygen, maxOxygen);
     }
@@ -117,7 +125,6 @@ public class PlayerStats : MonoBehaviour
     {
         if (cost <= 0f) return true;
         if (oxygen < cost) return false;
-
         ModifyOxygen(-cost);
         return true;
     }

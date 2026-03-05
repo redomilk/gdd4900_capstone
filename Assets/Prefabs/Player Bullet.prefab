@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBullet
   damage: 5.03
+  knockback: 2
   lifetime: 4
 --- !u!58 &3029570795845087146
 CircleCollider2D:

@@ -1,17 +1,17 @@
 using UnityEngine;
-
 public class FloaterController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 2f;
-    public float raycastDistance = 0.6f; // how close to wall before turning
+    public float raycastDistance = 0.6f;
 
     [Header("Damage")]
     public float damagePerSecond = 10f;
 
     Rigidbody2D rb;
     int wallLayer;
-    float direction = 1f; // 1 = right, -1 = left
+    float direction = 1f;
+    float knockbackTimer;
 
     void Awake()
     {
@@ -19,15 +19,23 @@ public class FloaterController : MonoBehaviour
         wallLayer = LayerMask.GetMask("Wall");
     }
 
+    public void ApplyKnockback(float duration)
+    {
+        knockbackTimer = duration;
+    }
+
     void FixedUpdate()
     {
-        // Raycast ahead to detect wall
+        if (knockbackTimer > 0f)
+        {
+            knockbackTimer -= Time.fixedDeltaTime;
+            return;
+        }
+
         Vector2 origin = transform.position;
         RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * direction, raycastDistance, wallLayer);
-
         if (hit.collider != null)
-            direction *= -1f; // flip direction
-
+            direction *= -1f;
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
     }
 
@@ -38,7 +46,6 @@ public class FloaterController : MonoBehaviour
             player.TakeDamage(damagePerSecond * Time.deltaTime);
     }
 
-    // Visualize raycast in editor
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

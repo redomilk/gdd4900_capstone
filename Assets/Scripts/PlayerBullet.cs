@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerBullet : MonoBehaviour
 {
     public float damage = 10f;
+    public float knockback = 4f;
     public float lifetime = 4f;
 
     void Start()
@@ -15,10 +16,9 @@ public class PlayerBullet : MonoBehaviour
         EnemyHealth enemy = other.GetComponent<EnemyHealth>();
         if (enemy != null)
         {
-            enemy.TakeDamage(damage);
+            enemy.TakeDamageWithKnockback(damage, transform.position, knockback);  // CHANGED
             Destroy(gameObject);
         }
-
         if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
             Destroy(gameObject);
     }
