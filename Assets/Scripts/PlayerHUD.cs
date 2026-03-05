@@ -78,8 +78,10 @@ public class PlayerHUD : MonoBehaviour
 
     void HandlePlayerDied()
     {
-        Debug.Log("Player died!");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (GameManager.instance != null)
+            GameManager.instance.DeathScrapPenalty(); //take some scrap away for dying
+
+        SceneManager.LoadScene("HUB");
     }
 
     public void ShowPrompt(string message)

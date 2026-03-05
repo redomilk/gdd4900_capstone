@@ -28,9 +28,17 @@ public class PlayerStats : MonoBehaviour
 
     void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
+
+        // Apply upgrades from GameManager if available
+        if (GameManager.instance != null)
+        {
+            maxHealth = 100f + (GameManager.instance.healthLevel * GameManager.instance.hpPerLevel);
+            maxOxygen = 100f + (GameManager.instance.oxygenLevel * GameManager.instance.oxygenPerLevel);
+        }
+
         health = maxHealth;
         oxygen = maxOxygen;
-        rb = GetComponent<Rigidbody2D>();
     }
 
     void OnEnable()

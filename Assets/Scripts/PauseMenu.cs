@@ -14,16 +14,67 @@ public class PauseMenu : MonoBehaviour
 
     bool isPaused;
     PlayerInput playerInput;
-    CanvasGroup pausePanelGroup;  // ADD THIS
+    CanvasGroup pausePanelGroup;
 
     void Awake()
     {
         playerInput = FindFirstObjectByType<PlayerInput>();
+    }
+
+    // Called by GameManager after panels are rewired
+    public void RewireButtons()
+    {
+        if (pausePanel == null) return;
+
+        WireButton(pausePanel, "ResumeButton", Resume);
+        WireButton(pausePanel, "OptionsButton", OpenOptions);
+        WireButton(pausePanel, "RestartButton", RestartScene);
+        WireButton(pausePanel, "QuitButton", QuitGame);
+
+        if (optionsPanel != null)
+        {
+            // Force activate it we ca search inside it
+            bool wasActive = optionsPanel.activeSelf;
+            optionsPanel.SetActive(true);
+            WireButton(optionsPanel, "BackButton", CloseOptions);
+            optionsPanel.SetActive(wasActive);  // restore original state
+        }
+
         pausePanelGroup = pausePanel.GetComponent<CanvasGroup>();
+    }
+
+    void WireButton(GameObject panel, string buttonName, UnityEngine.Events.UnityAction action)
+    {
+        // Search all children recursively instead of just direct children
+        Transform t = FindDeepChild(panel.transform, buttonName);
+        if (t == null)
+        {
+            Debug.LogWarning($"Button '{buttonName}' not found in {panel.name}");
+            foreach (Transform child in panel.GetComponentsInChildren<Transform>(true))
+                Debug.Log($"  Child: '{child.name}'");
+            return;
+        }
+        Button btn = t.GetComponent<Button>();
+        if (btn == null)
+        {
+            Debug.LogWarning($"No Button component on '{buttonName}'");
+            return;
+        }
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(action);
+        Debug.Log($"Wired: {buttonName}");
+    }
+
+    Transform FindDeepChild(Transform parent, string name)
+    {
+        foreach (Transform child in parent.GetComponentsInChildren<Transform>(true))
+            if (child.name == name) return child;
+        return null;
     }
 
     void Start()
     {
+        RewireButtons();
         Resume();
     }
 
@@ -78,7 +129,6 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenOptions()
     {
-        // dims pause panel
         if (pausePanelGroup != null)
         {
             pausePanelGroup.interactable = false;
@@ -90,7 +140,6 @@ public class PauseMenu : MonoBehaviour
     public void CloseOptions()
     {
         if (optionsPanel != null) optionsPanel.SetActive(false);
-        // restores pausePanel to full brightness
         if (pausePanelGroup != null)
         {
             pausePanelGroup.interactable = true;

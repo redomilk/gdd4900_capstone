@@ -2,9 +2,18 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
-    public float damage = 10f;
+    public float baseDamage = 10f;
+    public float damage;
     public float knockback = 4f;
     public float lifetime = 4f;
+
+    void Awake()
+    {
+        // Apply damage upgrade on top of base damage
+        damage = baseDamage;
+        if (GameManager.instance != null)
+            damage += GameManager.instance.damageLevel * GameManager.instance.damagePerLevel;
+    }
 
     void Start()
     {

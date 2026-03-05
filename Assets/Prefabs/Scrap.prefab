@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b3ea136c282ae41b98616b99999d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrapPickup
-  scrapValue: 10
+  scrapValue: 50
   fallSpeed: 0.5
   rayDistance: 0.5
   wallLayer:

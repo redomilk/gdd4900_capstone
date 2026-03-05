@@ -4,14 +4,24 @@ using UnityEngine;
 public class SlashAttack : MonoBehaviour
 {
     public float lifetime = 0.12f;
-    public float damage = 10f;
-    public float knockback = 8f;
+    public float baseDamage = 10f;  // CHANGED — was damage
+    public float damage;
+    public float knockback = 4f;
     public float reflectSpeedMultiplier = 1.5f;
 
     float timer;
     Vector2 slashDirection;
-    Vector2 playerPosition;  // ADD THIS
+    Vector2 playerPosition;
+
     readonly HashSet<IDamageable> hitThisSwing = new HashSet<IDamageable>();
+
+    void Awake()
+    {
+        // Apply damage upgrade on spawn
+        damage = baseDamage;
+        if (GameManager.instance != null)
+            damage += GameManager.instance.damageLevel * GameManager.instance.damagePerLevel;
+    }
 
     void OnEnable()
     {
@@ -33,14 +43,13 @@ public class SlashAttack : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void SetPlayerPosition(Vector2 position)  // ADD THIS
+    public void SetPlayerPosition(Vector2 position)
     {
         playerPosition = position;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Reflect bullets
         if (other.CompareTag("Enemy Bullet"))
         {
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
@@ -50,7 +59,7 @@ public class SlashAttack : MonoBehaviour
                 Bullet enemyScript = other.GetComponent<Bullet>();
                 if (enemyScript != null) Destroy(enemyScript);
                 PlayerBullet pb = other.gameObject.AddComponent<PlayerBullet>();
-                pb.damage = damage;
+                pb.baseDamage = damage;  // CHANGED — use baseDamage field
                 other.tag = "Player Bullet";
             }
             return;
@@ -65,7 +74,7 @@ public class SlashAttack : MonoBehaviour
         {
             EnemyHealth enemy = other.GetComponent<EnemyHealth>();
             if (enemy != null)
-                enemy.TakeDamageWithKnockback(damage, playerPosition, knockback);  // CHANGED
+                enemy.TakeDamageWithKnockback(damage, playerPosition, knockback);
             else
                 dmg.TakeDamage(damage);
         }
