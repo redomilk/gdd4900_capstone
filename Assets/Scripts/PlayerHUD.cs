@@ -80,7 +80,7 @@ public class PlayerHUD : MonoBehaviour
         if (!_oxygenTipFired && max > 0f && (current / max) < 0.25f)
         {
             _oxygenTipFired = true;
-            TooltipPopup.Instance.Show("Low Oxygen!",
+            TooltipPopup.Instance.ShowOnce("tip_oxygen", "Low Oxygen!",
                 "Oxygen is running low.\n\n" +
                 "You will take fixed damaged over time when oxygen is empty \n\n" +
                 "Find airpockets or kill enemies for bubbles.\n\n");

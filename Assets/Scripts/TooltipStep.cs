@@ -37,6 +37,7 @@ public class TooltipPopup : MonoBehaviour
 
         closeButton.onClick.AddListener(Close);
         panel.SetActive(false);
+        PlayerPrefs.DeleteAll();
     }
 
     // ── Public API ────────────────────────────────────────────────────────────
@@ -61,6 +62,19 @@ public class TooltipPopup : MonoBehaviour
 
         if (_fade != null) StopCoroutine(_fade);
         _fade = StartCoroutine(FadeIn());
+    }
+
+    /// <summary>
+    /// Shows the tooltip only the very first time this key is ever seen.
+    /// Uses PlayerPrefs to remember across sessions.
+    /// </summary>
+    public void ShowOnce(string key, string title, string body)
+    {
+        if (PlayerPrefs.GetInt(key, 0) == 1) return; // already seen
+
+        PlayerPrefs.SetInt(key, 1);
+        PlayerPrefs.Save();
+        Show(title, body);
     }
 
     /// <summary>Close the tooltip and unfreeze the game.</summary>
