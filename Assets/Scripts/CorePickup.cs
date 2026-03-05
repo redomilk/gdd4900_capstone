@@ -66,6 +66,12 @@ public class CorePickup : MonoBehaviour
             UpgradeLight(player);
         }
         else Debug.LogWarning("Player is null in Collect!");
+
+        TooltipPopup.Instance.Show("Flashlight Augment",
+        "Augment collected Flashlight has been upgraded.\n\n" +
+        "Press F to toggle it on and off.\n\n" +
+        "See more Dive deeper.");
+
         Destroy(gameObject);
     }
 
