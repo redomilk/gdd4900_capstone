@@ -12,6 +12,7 @@ public class EnemyExploder : MonoBehaviour
 
     [Header("Effects")]
     public GameObject explosionVFXPrefab;
+    public GameObject explosionLightPrefab;
 
     Transform player;
     SpriteRenderer sr;
@@ -67,12 +68,21 @@ public class EnemyExploder : MonoBehaviour
             if (distToPlayer <= explodeRadius)
             {
                 PlayerStats ps = player.GetComponent<PlayerStats>();
-                if (ps != null) ps.TakeDamageWithKnockback(explodeDamage, transform.position);  // CHANGED
+                if (ps != null) ps.TakeDamageWithKnockback(explodeDamage, transform.position); 
             }
         }
 
+        // spawn VFX
+        GameObject vfx = null;
         if (explosionVFXPrefab != null)
-            Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
+            vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
+
+        // spawn light and parent it to the VFX
+        if (explosionLightPrefab != null)
+        {
+            var lightObj = Instantiate(explosionLightPrefab, transform.position, Quaternion.identity);
+            if (vfx != null) lightObj.transform.SetParent(vfx.transform, true);
+        }
 
         Destroy(gameObject);
     }

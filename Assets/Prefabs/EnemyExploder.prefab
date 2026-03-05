@@ -257,3 +257,4 @@ MonoBehaviour:
   fuseTime: 0.8
   flashInterval: 0.1
   explosionVFXPrefab: {fileID: 151494619802317772, guid: 141c163ea41adea489d3dca23ea50ed5, type: 3}
+  explosionLightPrefab: {fileID: 7411234011678611728, guid: c8941809b51c8ac4f8941bd6c9c17a31, type: 3}

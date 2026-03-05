@@ -51,18 +51,18 @@ public class PauseMenu : MonoBehaviour
         {
             Debug.LogWarning($"Button '{buttonName}' not found in {panel.name}");
             foreach (Transform child in panel.GetComponentsInChildren<Transform>(true))
-                Debug.Log($"  Child: '{child.name}'");
+                //Debug.Log($"  Child: '{child.name}'");
             return;
         }
         Button btn = t.GetComponent<Button>();
         if (btn == null)
         {
-            Debug.LogWarning($"No Button component on '{buttonName}'");
+            //Debug.LogWarning($"No Button component on '{buttonName}'");
             return;
         }
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(action);
-        Debug.Log($"Wired: {buttonName}");
+       // Debug.Log($"Wired: {buttonName}");
     }
 
     Transform FindDeepChild(Transform parent, string name)
