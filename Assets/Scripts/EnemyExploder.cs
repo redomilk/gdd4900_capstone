@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class EnemyExploder : MonoBehaviour
 {
     [Header("Explosion")]
@@ -35,8 +36,19 @@ public class EnemyExploder : MonoBehaviour
             return;
         }
 
+        // Stun/freeze check — pauses fuse and movement
+        EnemyHealth eh = GetComponent<EnemyHealth>();
+        bool stunned = eh != null && eh.GetSpeedMultiplier() <= 0f;
+
         if (isTriggered)
         {
+            if (stunned)
+            {
+                // Flash slows down visually while stunned but fuse is paused
+                sr.color = new Color(0.4f, 0.7f, 1f); // blue tint while frozen
+                return;
+            }
+
             flashTimer -= Time.deltaTime;
             if (flashTimer <= 0f)
             {
@@ -48,8 +60,12 @@ public class EnemyExploder : MonoBehaviour
             fuseTimer -= Time.deltaTime;
             if (fuseTimer <= 0f)
                 Explode();
+
             return;
         }
+
+        // Don't trigger while stunned
+        if (stunned) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
         if (distance <= triggerDistance)
@@ -68,16 +84,14 @@ public class EnemyExploder : MonoBehaviour
             if (distToPlayer <= explodeRadius)
             {
                 PlayerStats ps = player.GetComponent<PlayerStats>();
-                if (ps != null) ps.TakeDamageWithKnockback(explodeDamage, transform.position); 
+                if (ps != null) ps.TakeDamageWithKnockback(explodeDamage, transform.position);
             }
         }
 
-        // spawn VFX
         GameObject vfx = null;
         if (explosionVFXPrefab != null)
             vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
 
-        // spawn light and parent it to the VFX
         if (explosionLightPrefab != null)
         {
             var lightObj = Instantiate(explosionLightPrefab, transform.position, Quaternion.identity);

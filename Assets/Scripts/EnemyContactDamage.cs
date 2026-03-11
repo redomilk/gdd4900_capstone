@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+
 public class EnemyContactDamage : MonoBehaviour
 {
     public float damagePerSecond = 10f;
@@ -6,6 +8,8 @@ public class EnemyContactDamage : MonoBehaviour
 
     PlayerStats playerInside;
     float knockbackTimer;
+
+    // -------------Update------------------
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -22,9 +26,7 @@ public class EnemyContactDamage : MonoBehaviour
     {
         PlayerStats player = other.GetComponent<PlayerStats>();
         if (player != null)
-        {
             playerInside = player;
-        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -38,7 +40,14 @@ public class EnemyContactDamage : MonoBehaviour
     {
         if (playerInside == null) return;
 
-        playerInside.TakeDamage(damagePerSecond * Time.deltaTime);
+        // Respect stun/slow from CoreEffects — read from EnemyHealth on same object
+        EnemyHealth eh = GetComponent<EnemyHealth>();
+        float speedMult = eh != null ? eh.GetSpeedMultiplier() : 1f;
+
+        // Stunned (speedMult == 0): no damage ticks, no knockback
+        if (speedMult <= 0f) return;
+
+        playerInside.TakeDamage(damagePerSecond * speedMult * Time.deltaTime);
 
         knockbackTimer -= Time.deltaTime;
         if (knockbackTimer <= 0f)
