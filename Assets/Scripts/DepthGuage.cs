@@ -51,7 +51,8 @@ public class DepthGauge : MonoBehaviour
                 "W A S D to move.\n\n" +
                 "Spacebar to boost.\n\n" +
                 "Left click to fire ranged.\n\n" +
-                "Right click to melee.");
+                "Right click to melee. \n\n" +
+                "<color=red>Melee Reflects enemy bullets</color>");
             return;
         }
 

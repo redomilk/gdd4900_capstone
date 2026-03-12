@@ -15,6 +15,8 @@ public class CrateBreak : MonoBehaviour, IDamageable
     [Tooltip("FMOD event path, e.g. event:/SFX_CrateBreak")]
     public string breakSoundEvent = "event:/SFX_CrateBreak";
 
+    bool _coreTipFired = false;
+
     SpriteRenderer sr;
 
     void Awake()
@@ -83,7 +85,20 @@ public class CrateBreak : MonoBehaviour, IDamageable
         CoreSwapPickup pickup = go.GetComponent<CoreSwapPickup>();
 
         if (pickup != null)
+        {
             pickup.Initialize(rolled);
+
+            if (!_coreTipFired && TooltipPopup.Instance != null)
+            {
+                _coreTipFired = true;
+                Debug.Log($"[CrateBreak] Calling ShowOnce. Instance null? {TooltipPopup.Instance == null}");
+                TooltipPopup.Instance.ShowOnce("tip_core", "Core Dropped!",
+                    "Cores modify your weapon behaviour.\n\n" +
+                    "Press e to swap to dropped core.\n\n" +
+                    "Only one core can be equipped at a time.\n\n" +
+                    "Press tab to see core inventory");
+            }
+        }
         else
             Debug.LogWarning("CrateBreak: corePickupPrefab does not have a CoreSwapPickup component.");
     }

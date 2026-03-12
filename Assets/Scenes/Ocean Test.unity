@@ -56508,6 +56508,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7432207312803322312, guid: 6eb7c1685d70f4d81b59848b46aa6fc0, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8958675748364181449, guid: 6eb7c1685d70f4d81b59848b46aa6fc0, type: 3}
       propertyPath: m_fontSize
       value: 21.95
