@@ -17,10 +17,10 @@ MonoBehaviour:
   rarity: 4
   icon: {fileID: 1170115753450382605, guid: c97c08c0e39155d4186b923154aa6933, type: 3}
   description: 
-  healthBonus: 0
-  oxygenBonus: 0
-  speedBonus: 0
-  damageBonus: 0
+  healthBonus: 50
+  oxygenBonus: 100
+  speedBonus: 50
+  damageBonus: 15
   defenseBonus: 0
   attackSpeedBonus: 0
   meleeEffect: 0

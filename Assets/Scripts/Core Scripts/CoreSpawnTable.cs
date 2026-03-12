@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// Place on a manager object. Handles depth-weighted random core spawning.
-// Assign all CoreData assets to the corePool list in the Inspector.
 public class CoreSpawnTable : MonoBehaviour
 {
     [Header("Core Pool")]
@@ -14,11 +12,23 @@ public class CoreSpawnTable : MonoBehaviour
     public GameObject corePickupPrefab;
 
     [Header("Debug Spawning")]
-    [Tooltip("When enabled, all crate drops will force this rarity instead of rolling randomly.")]
     public bool forceRarity = false;
     public CoreRarity forcedRarity = CoreRarity.UltraRare;
 
-    // Returns a random CoreData valid for the given depth (world-space Y, negative = deeper).
+    [Header("Demo Settings")]
+    [Tooltip("Minimum rarity that can drop - Uncommon for alpha")]
+    public CoreRarity minimumRarity = CoreRarity.Uncommon;
+    [Tooltip("Enable for consistent repeatable drops")]
+    public bool useSeed = false;
+    public int seed = 12345;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        if (useSeed)
+            Random.InitState(seed);
+    }
+
     public CoreData RollCore(float currentDepth)
     {
         Debug.Log("RollCore called, pool count: " + corePool.Count + " depth: " + currentDepth);
@@ -29,7 +39,7 @@ public class CoreSpawnTable : MonoBehaviour
             return null;
         }
 
-        // Debug override - force a specific rarity
+        // Force rarity override for testing
         if (forceRarity)
         {
             List<CoreData> ofRarity = corePool.Where(c => c.rarity == forcedRarity).ToList();
@@ -44,14 +54,20 @@ public class CoreSpawnTable : MonoBehaviour
 
         float depth = Mathf.Abs(currentDepth);
 
+        // Filter by depth AND minimum rarity floor
         List<CoreData> eligible = corePool
-            .Where(c => depth >= CoreData.MinDepthForRarity(c.rarity))
+            .Where(c => depth >= CoreData.MinDepthForRarity(c.rarity) && c.rarity >= minimumRarity)
             .ToList();
 
         if (eligible.Count == 0)
         {
-            Debug.LogWarning("CoreSpawnTable: No eligible cores at depth " + depth);
-            return null;
+            // Fallback - ignore depth requirement but still respect minimum rarity
+            eligible = corePool.Where(c => c.rarity >= minimumRarity).ToList();
+            if (eligible.Count == 0)
+            {
+                Debug.LogWarning("CoreSpawnTable: No eligible cores at depth " + depth);
+                return null;
+            }
         }
 
         float totalWeight = eligible.Sum(c => GetWeight(c.rarity, depth));
@@ -79,7 +95,6 @@ public class CoreSpawnTable : MonoBehaviour
         return go;
     }
 
-    // Weight table
     static float GetWeight(CoreRarity rarity, float depth)
     {
         return rarity switch
