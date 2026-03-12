@@ -37,6 +37,7 @@ public class ExtractProcess : MonoBehaviour
         if (PlayerHUD.instance != null)
             PlayerHUD.instance.HidePrompt();
         GameManager.instance.BankRunScrap();
+        CorePersistence.instance?.SaveCores();
         SceneManager.LoadScene(hubSceneName);
     }
 }

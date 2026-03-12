@@ -9,11 +9,9 @@ public class EnemyContactDamage : MonoBehaviour
     PlayerStats playerInside;
     float knockbackTimer;
 
-    // -------------Update------------------
-
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D col)
     {
-        PlayerStats player = other.GetComponent<PlayerStats>();
+        PlayerStats player = col.gameObject.GetComponent<PlayerStats>();
         if (player != null)
         {
             playerInside = player;
@@ -22,16 +20,16 @@ public class EnemyContactDamage : MonoBehaviour
         }
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnCollisionStay2D(Collision2D col)
     {
-        PlayerStats player = other.GetComponent<PlayerStats>();
+        PlayerStats player = col.gameObject.GetComponent<PlayerStats>();
         if (player != null)
             playerInside = player;
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnCollisionExit2D(Collision2D col)
     {
-        PlayerStats player = other.GetComponent<PlayerStats>();
+        PlayerStats player = col.gameObject.GetComponent<PlayerStats>();
         if (player != null && player == playerInside)
             playerInside = null;
     }
@@ -40,11 +38,8 @@ public class EnemyContactDamage : MonoBehaviour
     {
         if (playerInside == null) return;
 
-        // Respect stun/slow from CoreEffects — read from EnemyHealth on same object
         EnemyHealth eh = GetComponent<EnemyHealth>();
         float speedMult = eh != null ? eh.GetSpeedMultiplier() : 1f;
-
-        // Stunned (speedMult == 0): no damage ticks, no knockback
         if (speedMult <= 0f) return;
 
         playerInside.TakeDamage(damagePerSecond * speedMult * Time.deltaTime);

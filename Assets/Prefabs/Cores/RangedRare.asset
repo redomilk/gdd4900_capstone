@@ -28,9 +28,9 @@ MonoBehaviour:
   bleedDPS: 0
   stunDuration: 0
   lifestealPercent: 0
-  rangedEffect: 0
-  freezeDuration: 0
-  freezeSlowPercent: 0.5
+  rangedEffect: 1
+  freezeDuration: 1
+  freezeSlowPercent: 1.09
   explosionRadius: 0
   explosionDamage: 0
   chainTargets: 0

@@ -7,9 +7,10 @@ public class PlayerBullet : MonoBehaviour
     public float knockback = 4f;
     public float lifetime = 4f;
 
+    CoreEffects coreEffects;
+
     void Awake()
     {
-        // Apply damage upgrade on top of base damage
         damage = baseDamage;
         if (GameManager.instance != null)
             damage += GameManager.instance.damageLevel * GameManager.instance.damagePerLevel;
@@ -20,13 +21,17 @@ public class PlayerBullet : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
+    public void SetCoreEffects(CoreEffects effects) => coreEffects = effects;
+
     void OnTriggerEnter2D(Collider2D other)
     {
         // Enemy hit
         EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+        Debug.Log("Bullet hit enemy, coreEffects=" + (coreEffects == null ? "NULL" : "found"));
         if (enemy != null)
         {
             enemy.TakeDamageWithKnockback(damage, transform.position, knockback);
+            coreEffects?.ApplyRangedEffect(enemy.gameObject, transform.position);
             Destroy(gameObject);
             return;
         }

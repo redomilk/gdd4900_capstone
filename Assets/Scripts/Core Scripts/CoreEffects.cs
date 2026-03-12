@@ -63,6 +63,7 @@ public class CoreEffects : MonoBehaviour
     // Pass the projectile world position for AoE effects.
     public void ApplyRangedEffect(GameObject target, Vector2 hitPosition)
     {
+        Debug.Log("ApplyRangedEffect called, core=" + (inv.rangedCore != null ? inv.rangedCore.coreName : "NULL") + " effect=" + (inv.rangedCore != null ? inv.rangedCore.rangedEffect.ToString() : "none"));
         CoreData core = inv.rangedCore;
         if (core == null) return;
 

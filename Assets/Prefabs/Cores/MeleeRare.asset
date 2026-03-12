@@ -23,13 +23,13 @@ MonoBehaviour:
   damageBonus: 0
   defenseBonus: 0
   attackSpeedBonus: 0
-  meleeEffect: 0
+  meleeEffect: 4
   knockbackForce: 0
   bleedDPS: 0
   stunDuration: 0
-  lifestealPercent: 0
-  rangedEffect: 0
-  freezeDuration: 0
+  lifestealPercent: 1.5
+  rangedEffect: 1
+  freezeDuration: 1.02
   freezeSlowPercent: 0.5
   explosionRadius: 0
   explosionDamage: 0

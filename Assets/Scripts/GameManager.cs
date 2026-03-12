@@ -88,6 +88,9 @@ public class GameManager : MonoBehaviour
             mainMenu.depthGauge = GameObject.Find("Depth Guage UI");
             mainMenu.resourceBars = GameObject.Find("Resource Bars");
         }
+
+        //give player cores back
+        CorePersistence.instance?.RestoreCores();
     }
 
     public void ApplyUpgrades(PlayerStats ps)
@@ -126,6 +129,7 @@ public class GameManager : MonoBehaviour
         scrapCount += kept;
         runScrapCount = 0;
         Debug.Log($"Lost {lost} run scrap on death, banked {kept}");
+        CorePersistence.instance?.WipeCores();
     }
 
     void Update()

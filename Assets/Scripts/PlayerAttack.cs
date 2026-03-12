@@ -18,10 +18,12 @@ public class PlayerAttack : MonoBehaviour
 
     float cooldown;
     Camera cam;
+    CoreEffects coreEffects;
 
     void Awake()
     {
         cam = Camera.main;
+        coreEffects = GetComponent<CoreEffects>();
     }
 
     void Update()
@@ -47,19 +49,27 @@ public class PlayerAttack : MonoBehaviour
         mouseWorld.z = 0f;
         Vector2 dir = (mouseWorld - transform.position).normalized;
         Vector3 spawnPos = transform.position + (Vector3)(dir * slashDistance);
+
         GameObject slash = Instantiate(slashPrefab, spawnPos, Quaternion.identity);
         SlashAttack slashAttack = slash.GetComponent<SlashAttack>();
         slashAttack.Initialize(dir);
         slashAttack.SetPlayerPosition(transform.position);
+        slashAttack.SetCoreEffects(coreEffects);   // <-- pass effects
     }
 
     void AttackRanged()
     {
         if (bulletPrefab == null || firePoint == null) return;
+
         Vector3 mouseWorld = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mouseWorld.z = 0f;
         Vector2 dir = (mouseWorld - (Vector3)firePoint.position).normalized;
+
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody2D>().linearVelocity = dir * bulletSpeed;
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.linearVelocity = dir * bulletSpeed;
+
+        PlayerBullet pb = bullet.GetComponent<PlayerBullet>();
+        pb.SetCoreEffects(coreEffects);            // <-- pass effects
     }
 }

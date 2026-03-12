@@ -33,7 +33,7 @@ public class CoreSwapPickup : MonoBehaviour
     void ApplyCoreData()
     {
         if (coreData == null) { Debug.LogWarning("CoreSwapPickup.ApplyCoreData: coreData is null"); return; }
-        Debug.Log("CoreSwapPickup.ApplyCoreData: applying " + coreData.coreName + " icon=" + (coreData.icon != null ? coreData.icon.name : "NULL"));
+       // Debug.Log("CoreSwapPickup.ApplyCoreData: applying " + coreData.coreName + " icon=" + (coreData.icon != null ? coreData.icon.name : "NULL"));
         SR.sprite = coreData.icon;
         SetupGlow();
     }

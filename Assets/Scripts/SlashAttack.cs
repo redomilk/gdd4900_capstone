@@ -12,6 +12,8 @@ public class SlashAttack : MonoBehaviour
     float timer;
     Vector2 slashDirection;
     Vector2 playerPosition;
+    CoreEffects coreEffects;
+
     readonly HashSet<IDamageable> hitThisSwing = new HashSet<IDamageable>();
 
     void Awake()
@@ -30,8 +32,7 @@ public class SlashAttack : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        if (timer <= 0f)
-            Destroy(gameObject);
+        if (timer <= 0f) Destroy(gameObject);
     }
 
     public void Initialize(Vector2 direction)
@@ -41,10 +42,9 @@ public class SlashAttack : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void SetPlayerPosition(Vector2 position)
-    {
-        playerPosition = position;
-    }
+    public void SetPlayerPosition(Vector2 position) => playerPosition = position;
+
+    public void SetCoreEffects(CoreEffects effects) => coreEffects = effects;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -66,14 +66,10 @@ public class SlashAttack : MonoBehaviour
 
         // Hit crates
         CrateBreak crate = other.GetComponent<CrateBreak>();
-        if (crate != null)
-        {
-            crate.TakeDamage(damage);
-            return;
-        }
+        if (crate != null) { crate.TakeDamage(damage); return; }
 
         // Hit enemies
-        if (!other.CompareTag("Enemy")) return;
+        if (!other.CompareTag("Enemy") && !other.CompareTag("Enemy Charger")) return;
         IDamageable dmg = other.GetComponent<IDamageable>();
         if (dmg == null) return;
 
@@ -81,9 +77,15 @@ public class SlashAttack : MonoBehaviour
         {
             EnemyHealth enemy = other.GetComponent<EnemyHealth>();
             if (enemy != null)
+            {
                 enemy.TakeDamageWithKnockback(damage, playerPosition, knockback);
+                coreEffects?.SetLastMeleeDamage(damage);
+                coreEffects?.ApplyMeleeEffect(enemy.gameObject, (enemy.transform.position - (Vector3)(Vector2)playerPosition).normalized);
+            }
             else
+            {
                 dmg.TakeDamage(damage);
+            }
         }
     }
 }

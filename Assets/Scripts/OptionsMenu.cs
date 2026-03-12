@@ -24,22 +24,23 @@ public class OptionsMenu : MonoBehaviour
 
     void OnEnable()
     {
-        // Temporarily remove listeners so setting .value doesn't trigger callbacks
+        depthLighting = FindFirstObjectByType<DepthLighting>();
+
         darknessSlider.onValueChanged.RemoveListener(OnDarknessChanged);
         volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
 
         darknessSlider.value = depthLighting != null ? depthLighting.darknessStrength : 1f;
-
         masterBus.getVolume(out float vol);
         volumeSlider.value = vol;
 
-        // Re-add listeners after values are set
         darknessSlider.onValueChanged.AddListener(OnDarknessChanged);
         volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
     }
 
     public void OnDarknessChanged(float value)
     {
+        if (depthLighting == null)
+            depthLighting = FindFirstObjectByType<DepthLighting>();
         if (depthLighting != null)
             depthLighting.darknessStrength = value;
     }
