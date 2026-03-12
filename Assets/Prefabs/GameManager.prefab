@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2512188811331132985}
   - component: {fileID: 728697317906515992}
   - component: {fileID: 4917132532528995540}
+  - component: {fileID: 5363125615619064958}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6689417601689124306}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.43, y: 7.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -102,3 +103,37 @@ MonoBehaviour:
   oxygenPerLevel: 10
   speedPerLevel: 0.3
   damagePerLevel: 2
+--- !u!114 &5363125615619064958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6689417601689124306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 187c420fab871a347b3ebd2cf8b48b25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoreSpawnTable
+  corePool:
+  - {fileID: 11400000, guid: 3244dc8e735c0d348bef8be0ffe1bbae, type: 2}
+  - {fileID: 11400000, guid: b2b9c2cb2aaa31e4fa9514c0b084b652, type: 2}
+  - {fileID: 11400000, guid: b6b2bf19b37c503448592d958b8b466f, type: 2}
+  - {fileID: 11400000, guid: f941cfcfe2664824a81d2906773d0910, type: 2}
+  - {fileID: 11400000, guid: 8ba9ab8f78119e542867a102caeff104, type: 2}
+  - {fileID: 11400000, guid: 409d68cf7cc7be34299759e20d74eba7, type: 2}
+  - {fileID: 11400000, guid: a849432352daa0845b41a56802075277, type: 2}
+  - {fileID: 11400000, guid: 2a7ff322c77e7bb46a8af7741151e8d6, type: 2}
+  - {fileID: 11400000, guid: 2457f21c7f8b6cc4aa797287a498aa3a, type: 2}
+  - {fileID: 11400000, guid: 227f0a301fd54654a9156248bc183192, type: 2}
+  - {fileID: 11400000, guid: 913b9ca730462594682b5d0b0d83649a, type: 2}
+  - {fileID: 11400000, guid: 24afaccc42b0d9b45a00bb02ec4d51bb, type: 2}
+  - {fileID: 11400000, guid: 01abd165fe84704469f414366388a76d, type: 2}
+  - {fileID: 11400000, guid: 6b2c8ffbb3045df42a151daab708a64f, type: 2}
+  - {fileID: 11400000, guid: 667fb2e66ef266449989c8291f3993f0, type: 2}
+  - {fileID: 11400000, guid: d3749a7db53c7f345a31ef650f23486d, type: 2}
+  - {fileID: 11400000, guid: 3de7cb8ab07729043bd5d6811fb72fc9, type: 2}
+  - {fileID: 11400000, guid: 568b81da8852a9c43b25f62901782666, type: 2}
+  - {fileID: 11400000, guid: 04cb1b23297677d43baaba8895a462fd, type: 2}
+  - {fileID: 11400000, guid: 48bf76f42e9657c44a392111708c76fb, type: 2}
+  corePickupPrefab: {fileID: 584385906306195580, guid: d7cd61dc9afe01f49a41d08fa8ecd740, type: 3}

@@ -15,12 +15,12 @@ MonoBehaviour:
   Path: Assets/FMODBanks/AbyssDweller/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639082653600265715
+  lastModified: 639088556715727673
   FileSizes:
   - Name: Desktop
-    Value: 6920512
+    Value: 6929376
   Exists: 1
---- !u!114 &11400000
+--- !u!114 &-3382229243209560821
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29,42 +29,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EventCache
-  EditorBanks:
-  - {fileID: 5597171384720267503}
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Crate Break
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Crate Break
+  Guid:
+    Data1: 41558157
+    Data2: 1300889815
+    Data3: -364382583
+    Data4: 1311525723
+  Banks:
   - {fileID: -5549777051645858098}
-  EditorEvents:
-  - {fileID: 5622417578173620348}
-  EditorParameters: []
-  MasterBanks:
-  - {fileID: -5549777051645858098}
-  StringsBanks:
-  - {fileID: 5597171384720267503}
-  cacheTime: 639082653600599079
-  cacheVersion: 131635
---- !u!114 &5597171384720267503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.strings.bank
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
-  Path: Assets/FMODBanks/AbyssDweller/Build/Desktop/Master.strings.bank
-  Name: Master.strings
-  StudioPath: bank:/Master.strings
-  lastModified: 639082653600599079
-  FileSizes:
-  - Name: Desktop
-    Value: 764
-  Exists: 1
---- !u!114 &5622417578173620348
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-424116979825920800
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,3 +74,48 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EventCache
+  EditorBanks:
+  - {fileID: 5597171384720267503}
+  - {fileID: -5549777051645858098}
+  EditorEvents:
+  - {fileID: -424116979825920800}
+  - {fileID: -3382229243209560821}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: -5549777051645858098}
+  StringsBanks:
+  - {fileID: 5597171384720267503}
+  cacheTime: 639088556715770195
+  cacheVersion: 131635
+--- !u!114 &5597171384720267503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorBankRef
+  Path: Assets/FMODBanks/AbyssDweller/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 639088556715770195
+  FileSizes:
+  - Name: Desktop
+    Value: 818
+  Exists: 1

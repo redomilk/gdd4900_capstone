@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1775e76acca412e45a95d0a488459119, type: 3}
   m_Name: BoosterCommon
   m_EditorClassIdentifier: Assembly-CSharp::CoreData
-  coreName: Booster Core (Common)
+  coreName: Booster Core
   slot: 3
   rarity: 0
-  icon: {fileID: 0}
+  icon: {fileID: 1170115753450382605, guid: c97c08c0e39155d4186b923154aa6933, type: 3}
   description: 
   healthBonus: 0
   oxygenBonus: 0

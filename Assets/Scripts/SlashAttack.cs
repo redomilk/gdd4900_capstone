@@ -4,7 +4,7 @@ using UnityEngine;
 public class SlashAttack : MonoBehaviour
 {
     public float lifetime = 0.12f;
-    public float baseDamage = 10f;  // CHANGED — was damage
+    public float baseDamage = 10f;
     public float damage;
     public float knockback = 4f;
     public float reflectSpeedMultiplier = 1.5f;
@@ -12,12 +12,10 @@ public class SlashAttack : MonoBehaviour
     float timer;
     Vector2 slashDirection;
     Vector2 playerPosition;
-
     readonly HashSet<IDamageable> hitThisSwing = new HashSet<IDamageable>();
 
     void Awake()
     {
-        // Apply damage upgrade on spawn
         damage = baseDamage;
         if (GameManager.instance != null)
             damage += GameManager.instance.damageLevel * GameManager.instance.damagePerLevel;
@@ -50,6 +48,7 @@ public class SlashAttack : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // Reflect enemy bullets
         if (other.CompareTag("Enemy Bullet"))
         {
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
@@ -59,14 +58,22 @@ public class SlashAttack : MonoBehaviour
                 Bullet enemyScript = other.GetComponent<Bullet>();
                 if (enemyScript != null) Destroy(enemyScript);
                 PlayerBullet pb = other.gameObject.AddComponent<PlayerBullet>();
-                pb.baseDamage = damage;  // CHANGED — use baseDamage field
+                pb.baseDamage = damage;
                 other.tag = "Player Bullet";
             }
             return;
         }
 
-        if (!other.CompareTag("Enemy")) return;
+        // Hit crates
+        CrateBreak crate = other.GetComponent<CrateBreak>();
+        if (crate != null)
+        {
+            crate.TakeDamage(damage);
+            return;
+        }
 
+        // Hit enemies
+        if (!other.CompareTag("Enemy")) return;
         IDamageable dmg = other.GetComponent<IDamageable>();
         if (dmg == null) return;
 

@@ -22,13 +22,29 @@ public class PlayerBullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // Enemy hit
         EnemyHealth enemy = other.GetComponent<EnemyHealth>();
         if (enemy != null)
         {
-            enemy.TakeDamageWithKnockback(damage, transform.position, knockback);  // CHANGED
+            enemy.TakeDamageWithKnockback(damage, transform.position, knockback);
             Destroy(gameObject);
+            return;
         }
-        if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+
+        // Crate hit
+        CrateBreak crate = other.GetComponent<CrateBreak>();
+        if (crate != null)
+        {
+            crate.TakeDamage(damage);
             Destroy(gameObject);
+            return;
+        }
+
+        // Wall hit
+        if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 }
