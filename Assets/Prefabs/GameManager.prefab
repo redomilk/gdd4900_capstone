@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8852042010012628302}
   - component: {fileID: 2821550360853955136}
   - component: {fileID: 2512188811331132985}
-  - component: {fileID: 728697317906515992}
   - component: {fileID: 4917132532528995540}
   - component: {fileID: 5363125615619064958}
   m_Layer: 0
@@ -65,22 +64,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomCursor
   cursorTexture: {fileID: 2800000, guid: f5bf5b83f30ca4544b4ebb0373dc53a5, type: 3}
   hotspot: {x: 12, y: 12}
---- !u!114 &728697317906515992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6689417601689124306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70b4a43c624d0486a9436ee06173a691, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MainMenu
-  menuCanvas: {fileID: 0}
-  player: {fileID: 0}
-  depthGauge: {fileID: 0}
-  resourceBars: {fileID: 0}
 --- !u!114 &4917132532528995540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,3 +120,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 04cb1b23297677d43baaba8895a462fd, type: 2}
   - {fileID: 11400000, guid: 48bf76f42e9657c44a392111708c76fb, type: 2}
   corePickupPrefab: {fileID: 584385906306195580, guid: d7cd61dc9afe01f49a41d08fa8ecd740, type: 3}
+  forceRarity: 0
+  forcedRarity: 4
+  minimumRarity: 1
+  useSeed: 0
+  seed: 12345

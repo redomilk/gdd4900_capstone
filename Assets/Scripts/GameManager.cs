@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Skip all game wiring if we're on the menu scene
+        if (scene.name == "Main Menu") return;
+
         PlayerStats ps = FindFirstObjectByType<PlayerStats>();
         if (ps != null) ApplyUpgrades(ps);
 
@@ -54,7 +57,6 @@ public class GameManager : MonoBehaviour
         PauseMenu pauseMenu = FindFirstObjectByType<PauseMenu>();
         if (pauseMenu != null)
         {
-            // Search entire scene for panels by name including inactive
             Canvas[] allCanvases = FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (Canvas canvas in allCanvases)
             {
@@ -80,16 +82,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        MainMenu mainMenu = FindFirstObjectByType<MainMenu>();
-        if (mainMenu != null)
-        {
-            mainMenu.menuCanvas = GameObject.Find("Main Menu Canvas");
-            mainMenu.player = GameObject.FindGameObjectWithTag("Player");
-            mainMenu.depthGauge = GameObject.Find("Depth Guage UI");
-            mainMenu.resourceBars = GameObject.Find("Resource Bars");
-        }
-
-        //give player cores back
         CorePersistence.instance?.RestoreCores();
     }
 
@@ -136,7 +128,6 @@ public class GameManager : MonoBehaviour
     {
         if (Keyboard.current == null) return;
 
-        // Press 1 to add health level
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             healthLevel++;
@@ -145,7 +136,6 @@ public class GameManager : MonoBehaviour
             if (ps != null) ApplyUpgrades(ps);
         }
 
-        // Press 2 to add speed level
         if (Keyboard.current.digit2Key.wasPressedThisFrame)
         {
             speedLevel++;
@@ -154,7 +144,6 @@ public class GameManager : MonoBehaviour
             if (dc != null) ApplySpeedUpgrade(dc);
         }
 
-        // Press 3 to add oxygen level
         if (Keyboard.current.digit3Key.wasPressedThisFrame)
         {
             oxygenLevel++;
@@ -163,14 +152,12 @@ public class GameManager : MonoBehaviour
             if (ps != null) ApplyUpgrades(ps);
         }
 
-        // Press 4 to add damage level
         if (Keyboard.current.digit4Key.wasPressedThisFrame)
         {
             damageLevel++;
             Debug.Log($"Damage level: {damageLevel}");
         }
 
-        // Press 0 to print current stats
         if (Keyboard.current.digit0Key.wasPressedThisFrame)
         {
             PlayerStats ps = FindFirstObjectByType<PlayerStats>();

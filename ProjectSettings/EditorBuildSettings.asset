@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ocean Test.unity
     guid: f126576a65aec4adb800d27c8aa73337
+  - enabled: 1
+    path: Assets/Scenes/SQ scene.unity
+    guid: 58aa49ff6ea5b9a479494d68383c912c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
