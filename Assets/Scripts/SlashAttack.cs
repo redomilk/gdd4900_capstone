@@ -16,17 +16,25 @@ public class SlashAttack : MonoBehaviour
 
     readonly HashSet<IDamageable> hitThisSwing = new HashSet<IDamageable>();
 
+    Animator anim;
+
     void Awake()
     {
         damage = baseDamage;
         if (GameManager.instance != null)
             damage += GameManager.instance.damageLevel * GameManager.instance.damagePerLevel;
+
+        anim = GetComponentInChildren<Animator>();
     }
 
     void OnEnable()
     {
         timer = lifetime;
         hitThisSwing.Clear();
+
+        // Play the animation when slash is activated
+        if (anim != null)
+            anim.Play("Slash");
     }
 
     void Update()

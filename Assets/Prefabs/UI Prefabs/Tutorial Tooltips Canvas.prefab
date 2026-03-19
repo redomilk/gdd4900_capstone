@@ -74,8 +74,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 28.3
+  m_fontSizeBase: 28.3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -55.85469, w: 0}
+  m_margin: {x: -153.92139, y: 0, z: -136.70067, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -388,7 +388,9 @@ MonoBehaviour:
   titleText: {fileID: 2696408534049744971}
   bodyText: {fileID: 8958675748364181449}
   closeButton: {fileID: 628393001823817033}
+  tooltipToggle: {fileID: 0}
   fadeDuration: 0.15
+  tooltipsEnabled: 0
 --- !u!1 &6846357538563376541
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,8 +697,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 21.95
+  m_fontSizeBase: 21.95
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

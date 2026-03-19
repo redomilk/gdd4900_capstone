@@ -12,11 +12,10 @@ public class TooltipPopup : MonoBehaviour
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI bodyText;
     public Button closeButton;
+    public Toggle tooltipToggle; // assign your Tooltip Toggle in Inspector
 
     [Header("Settings")]
     public float fadeDuration = 0.15f;
-
-    // Starts OFF - player enables in options if they want tips
     public bool tooltipsEnabled = false;
 
     private CanvasGroup _cg;
@@ -27,15 +26,16 @@ public class TooltipPopup : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-
         _cg = panel.GetComponent<CanvasGroup>();
         if (_cg == null) _cg = panel.AddComponent<CanvasGroup>();
-
         closeButton.onClick.AddListener(Close);
         panel.SetActive(false);
 
-        // Load saved preference - defaults to 0 (off) if never set
         tooltipsEnabled = PlayerPrefs.GetInt(PrefsKey, 0) == 1;
+
+        // Sync toggle visual to match saved state without firing OnValueChanged
+        if (tooltipToggle != null)
+            tooltipToggle.SetIsOnWithoutNotify(tooltipsEnabled);
     }
 
     public bool IsOpen => panel.activeSelf;
@@ -43,12 +43,10 @@ public class TooltipPopup : MonoBehaviour
     public void Show(string title, string body)
     {
         if (!tooltipsEnabled) return;
-
         titleText.text = title;
         bodyText.text = body;
         panel.SetActive(true);
         Time.timeScale = 0f;
-
         if (_fade != null) StopCoroutine(_fade);
         _fade = StartCoroutine(FadeIn());
     }
@@ -68,7 +66,6 @@ public class TooltipPopup : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    // Call this from your checkbox toggle in the options menu
     public void SetTooltipsEnabled(bool enabled)
     {
         tooltipsEnabled = enabled;

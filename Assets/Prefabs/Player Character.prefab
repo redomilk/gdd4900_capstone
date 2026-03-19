@@ -4941,7 +4941,7 @@ MonoBehaviour:
   m_ComponentVersion: 2
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.261
+  m_FalloffIntensity: 0.268
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
@@ -4966,8 +4966,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 83.25482
   m_PointLightOuterAngle: 83.25482
-  m_PointLightInnerRadius: 2.93
-  m_PointLightOuterRadius: 2.93
+  m_PointLightInnerRadius: 2.94
+  m_PointLightOuterRadius: 3.96
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -4994,6 +4994,8 @@ GameObject:
   - component: {fileID: 4958634695004027575}
   - component: {fileID: 4109668618825524546}
   - component: {fileID: 8747466914119910038}
+  - component: {fileID: 2085461104498758735}
+  - component: {fileID: 2808269479153044049}
   m_Layer: 0
   m_Name: Player Character
   m_TagString: Player
@@ -5065,7 +5067,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 32
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee04eb07574b171449964b99f8c00630, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5137,17 +5139,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.007488966}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1, y: 1.5}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.5142188}
   m_EdgeRadius: 0
 --- !u!114 &2925076533132280207
 MonoBehaviour:
@@ -5168,9 +5170,9 @@ MonoBehaviour:
   entrySinkGravity: 0.8
   entrySinkDamping: 4
   entrySinkImpulse: 3
-  swimAcceleration: 74.3
-  maxHorizontalSpeed: 4.5
-  maxVerticalSpeed: 4.5
+  swimAcceleration: 30
+  maxHorizontalSpeed: 5
+  maxVerticalSpeed: 20
   swimStopDamping: 10
   upwardDriftForce: 0
   boostCooldown: 0.2
@@ -5199,6 +5201,8 @@ MonoBehaviour:
   oxygenDrainPerSecond: 2.19
   oxygenRegenPerSecond: 20
   drowningDamagePerSecond: 10
+  knockbackForce: 15
+  knockbackDuration: 0.08
 --- !u!114 &4109668618825524546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5212,7 +5216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
   slashPrefab: {fileID: 3803380387387900286, guid: a921cdbc2dbf7c74bbe95fae732b57d7, type: 3}
-  slashDistance: 0.8
+  slashDistance: 1.11
   bulletPrefab: {fileID: 1169255131016583427, guid: 35427bc2b627a3b4da54035f4dea4c92, type: 3}
   firePoint: {fileID: 4390306218124722724}
   bulletSpeed: 6
@@ -5231,3 +5235,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Flashlight
   flashlight: {fileID: 7594455324576391598}
+--- !u!114 &2085461104498758735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8352037513527971645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e12f94f112ecd44c855f566e982fa8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoreInventory
+  mainCore: {fileID: 0}
+  meleeCore: {fileID: 0}
+  rangedCore: {fileID: 0}
+  boosterCore: {fileID: 0}
+  corePickupPrefab: {fileID: 584385906306195580, guid: d7cd61dc9afe01f49a41d08fa8ecd740, type: 3}
+--- !u!114 &2808269479153044049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8352037513527971645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364cdb6fabc4b3347a0666d4ad0c6417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoreEffects
+  totalDamageBonus: 0
+  totalAttackSpeedBonus: 0
+  activeMeleeEffect: 0
+  activeRangedEffect: 0
