@@ -171,7 +171,7 @@ MonoBehaviour:
   stopDistance: 0.5
   followDistance: 5
   chargerKnockbackForce: 2.5
-  chargerKnockbackDuration: 0.3
+  chargerKnockbackDuration: 0.5
 --- !u!58 &7833394064868162682
 CircleCollider2D:
   m_ObjectHideFlags: 0
