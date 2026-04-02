@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8422813f06feed4f95f8c7e397d39b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HubManager
-  mainSceneName: Ocean Test
+  mainSceneName: SQ scene
   scrapText: {fileID: 231893894}
 --- !u!4 &78434259
 Transform:

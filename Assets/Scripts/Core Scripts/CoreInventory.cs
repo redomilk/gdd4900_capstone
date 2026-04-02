@@ -9,10 +9,24 @@ public class CoreInventory : MonoBehaviour
     public CoreData rangedCore;
     public CoreData boosterCore;
 
+    [Header("Default Starter Cores")]
+    public CoreData defaultMainCore;
+    public CoreData defaultMeleeCore;
+    public CoreData defaultRangedCore;
+    public CoreData defaultBoosterCore;
+
     [Header("Drop Settings")]
     public GameObject corePickupPrefab;
 
     //--------- Public slot access --------------------------
+    void Start()
+    {
+        if (mainCore == null && defaultMainCore != null) Equip(defaultMainCore);
+        if (meleeCore == null && defaultMeleeCore != null) Equip(defaultMeleeCore);
+        if (rangedCore == null && defaultRangedCore != null) Equip(defaultRangedCore);
+        if (boosterCore == null && defaultBoosterCore != null) Equip(defaultBoosterCore);
+    }
+
 
     public CoreData GetSlot(CoreSlot slot) => slot switch
     {

@@ -690,7 +690,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -63.439125, y: 0, z: 54.736526, w: 27.619349}
+  m_margin: {x: -12.63887, y: 0, z: 54.736526, w: 27.619349}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -63.439125, y: 0, z: 54.736526, w: 27.619349}
+  m_margin: {x: -9.413536, y: 0, z: 54.736526, w: 27.619349}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -65686,7 +65686,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -63.439125, y: 0, z: 54.736526, w: 27.619349}
+  m_margin: {x: -11.026169, y: 0, z: 54.736526, w: 27.619349}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -66464,7 +66464,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -63.439125, y: 0, z: 54.736526, w: 27.619349}
+  m_margin: {x: -14.251503, y: 0, z: 54.736526, w: 27.619349}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -69975,6 +69975,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: ee04eb07574b171449964b99f8c00630, type: 3}
+    - target: {fileID: 2085461104498758735, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
+      propertyPath: defaultMainCore
+      value: 
+      objectReference: {fileID: 11400000, guid: f941cfcfe2664824a81d2906773d0910, type: 2}
+    - target: {fileID: 2085461104498758735, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
+      propertyPath: defaultMeleeCore
+      value: 
+      objectReference: {fileID: 11400000, guid: b2b9c2cb2aaa31e4fa9514c0b084b652, type: 2}
+    - target: {fileID: 2085461104498758735, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
+      propertyPath: defaultRangedCore
+      value: 
+      objectReference: {fileID: 11400000, guid: b6b2bf19b37c503448592d958b8b466f, type: 2}
+    - target: {fileID: 2085461104498758735, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
+      propertyPath: defaultBoosterCore
+      value: 
+      objectReference: {fileID: 11400000, guid: 3244dc8e735c0d348bef8be0ffe1bbae, type: 2}
     - target: {fileID: 2925076533132280207, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
       propertyPath: boostCooldown
       value: 3

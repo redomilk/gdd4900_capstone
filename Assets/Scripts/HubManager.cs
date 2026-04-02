@@ -4,7 +4,7 @@ using TMPro;
 
 public class HubManager : MonoBehaviour
 {
-    [SerializeField] private string mainSceneName = "Main";
+    [SerializeField] private string mainSceneName = "SQ scene";
     public TextMeshProUGUI scrapText;
 
     void Start()
