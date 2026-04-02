@@ -46,6 +46,7 @@ public class CoreData : ScriptableObject
     public float explosionRadius = 0f;   // RangedEffect.Explosive
     public float explosionDamage = 0f;
     public int chainTargets = 0;    // RangedEffect.Chain
+    public float attackCooldownReduction;
 
     [Header("Booster Core Effects")]
     public float dashCooldownReduction = 0f;

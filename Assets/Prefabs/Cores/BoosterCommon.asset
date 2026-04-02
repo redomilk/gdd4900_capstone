@@ -30,10 +30,11 @@ MonoBehaviour:
   lifestealPercent: 0
   rangedEffect: 0
   freezeDuration: 0
-  freezeSlowPercent: 0.5
+  freezeSlowPercent: 0
   explosionRadius: 0
   explosionDamage: 0
   chainTargets: 0
-  dashCooldownReduction: 0
-  dashSpeedMultiplier: 1
+  attackCooldownReduction: 0
+  dashCooldownReduction: 0.5
+  dashSpeedMultiplier: 1.5
   airControlBonus: 0

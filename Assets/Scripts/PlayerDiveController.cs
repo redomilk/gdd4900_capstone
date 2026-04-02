@@ -39,6 +39,7 @@ public class PlayerDiveController : MonoBehaviour
 
     Rigidbody2D rb;
     PlayerStats stats;
+    CoreInventory inv;
 
     bool inWater;
 
@@ -48,7 +49,8 @@ public class PlayerDiveController : MonoBehaviour
     bool boosting;
     float boostTimeLeft;
     float boostTimer;
-    public float BoostTimerNormalized => Mathf.Clamp01(boostTimer / boostCooldown);
+    float actualBoostCooldown;
+    public float BoostTimerNormalized => Mathf.Clamp01(boostTimer / actualBoostCooldown);
     float savedDamping;
     Vector2 lastInputDir = Vector2.down;
     bool boostQueued;
@@ -60,6 +62,8 @@ public class PlayerDiveController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         stats = GetComponent<PlayerStats>();
+        inv = GetComponent<CoreInventory>();
+        actualBoostCooldown = boostCooldown;
     }
 
     void OnEnable()
@@ -176,7 +180,9 @@ public class PlayerDiveController : MonoBehaviour
         savedDamping = rb.linearDamping;
         rb.linearDamping = boostDamping;
         rb.linearVelocity = boostDir * boostMaxSpeed;
-        boostTimer = boostCooldown;
+        float reduction = (inv != null && inv.boosterCore != null) ? inv.boosterCore.dashCooldownReduction : 0f;
+        actualBoostCooldown = Mathf.Max(0.5f, boostCooldown - reduction);
+        boostTimer = actualBoostCooldown;
 
         if (boostParticles != null)
         {
@@ -200,7 +206,9 @@ public class PlayerDiveController : MonoBehaviour
     void EnterWater()
     {
         inWater = true;
-        boostTimer = boostCooldown; // set starting boost cooldown
+        float reduction = (inv != null && inv.boosterCore != null) ? inv.boosterCore.dashCooldownReduction : 0f;
+        actualBoostCooldown = Mathf.Max(0.5f, boostCooldown - reduction);
+        boostTimer = actualBoostCooldown;
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Min(rb.linearVelocity.y, 0f));
 

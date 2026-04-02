@@ -28,12 +28,13 @@ MonoBehaviour:
   bleedDPS: 0
   stunDuration: 0
   lifestealPercent: 0
-  rangedEffect: 0
+  rangedEffect: 4
   freezeDuration: 0
-  freezeSlowPercent: 0.5
+  freezeSlowPercent: 0
   explosionRadius: 0
   explosionDamage: 0
-  chainTargets: 0
+  chainTargets: 5
+  attackCooldownReduction: 0
   dashCooldownReduction: 0
   dashSpeedMultiplier: 1
   airControlBonus: 0

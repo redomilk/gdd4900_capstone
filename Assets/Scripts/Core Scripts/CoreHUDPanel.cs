@@ -169,7 +169,7 @@ public class CoreSlotUI
                 case MeleeEffect.Knockback: sb.Append($" (Force: {c.knockbackForce:0.#})"); break;
                 case MeleeEffect.Bleed: sb.Append($" ({c.bleedDPS:0.#} DPS)"); break;
                 case MeleeEffect.Stun: sb.Append($" ({c.stunDuration:0.#}s)"); break;
-                case MeleeEffect.Lifesteal: sb.Append($" ({c.lifestealPercent * 100f:0}% steal)"); break;
+                case MeleeEffect.Lifesteal: sb.Append($" ({c.lifestealPercent * 100f:0}% )"); break;
             }
         }
 
@@ -180,7 +180,7 @@ public class CoreSlotUI
             {
                 case RangedEffect.Freeze: sb.Append($" ({c.freezeDuration:0.#}s, {c.freezeSlowPercent * 100f:0}% slow)"); break;
                 case RangedEffect.Explosive: sb.Append($" (r:{c.explosionRadius:0.#}, {c.explosionDamage:0.#} dmg)"); break;
-                case RangedEffect.Chain: sb.Append($" (x{c.chainTargets} targets)"); break;
+                case RangedEffect.Chain: sb.Append($" (x {c.chainTargets} targets)"); break;
             }
         }
 
