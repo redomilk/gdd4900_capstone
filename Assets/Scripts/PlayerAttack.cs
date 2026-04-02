@@ -31,7 +31,7 @@ public class PlayerAttack : MonoBehaviour
         cooldown -= Time.deltaTime;
         if (cooldown > 0f) return;
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.leftButton.isPressed)
         {
             AttackRanged();
             cooldown = attackCooldown;

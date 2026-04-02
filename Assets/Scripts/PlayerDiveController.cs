@@ -26,7 +26,7 @@ public class PlayerDiveController : MonoBehaviour
     public float upwardDriftForce = 0f;
 
     [Header("Swim Boost")]
-    public float boostCooldown = 0.6f;
+    public float boostCooldown = 5f;
     public float boostDuration = 0.25f;
     public float boostMaxSpeed = 12f;
     public float boostDamping = 0f;
@@ -48,6 +48,7 @@ public class PlayerDiveController : MonoBehaviour
     bool boosting;
     float boostTimeLeft;
     float boostTimer;
+    public float BoostTimerNormalized => Mathf.Clamp01(boostTimer / boostCooldown);
     float savedDamping;
     Vector2 lastInputDir = Vector2.down;
     bool boostQueued;
@@ -199,6 +200,7 @@ public class PlayerDiveController : MonoBehaviour
     void EnterWater()
     {
         inWater = true;
+        boostTimer = boostCooldown; // set starting boost cooldown
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Min(rb.linearVelocity.y, 0f));
 

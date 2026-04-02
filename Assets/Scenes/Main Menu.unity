@@ -5252,7 +5252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
   menuCanvas: {fileID: 2078295567}
   bubblePrefab: {fileID: 6324923782049190060, guid: 285d4e15be37f40ea9e1a7719b3f783c, type: 3}
-  scrollDuration: 3
+  scrollDuration: 2
   diveDistance: 14.2
   bubbleLingerTime: 2
   spawnWidth: 18.19
