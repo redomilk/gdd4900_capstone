@@ -10,6 +10,10 @@ public class PlayerHUD : MonoBehaviour
     [Header("UI Elements")]
     public Image healthFill;
     public Image oxygenFill;
+
+    public TextMeshProUGUI healthText; //value text
+    public TextMeshProUGUI oxygenText; //value text
+
     public TextMeshProUGUI promptText;
 
     [Header("Prompt Settings")]
@@ -69,12 +73,21 @@ public class PlayerHUD : MonoBehaviour
 
     void HandleHealthChanged(float current, float max)
     {
-        if (healthFill) healthFill.fillAmount = (max <= 0f) ? 0f : current / max;
+        if (healthFill)
+            healthFill.fillAmount = (max <= 0f) ? 0f : current / max;
+
+        //update hud text
+        if (healthText)
+            healthText.text = $"{Mathf.CeilToInt(current)}/{Mathf.CeilToInt(max)}";
     }
 
     void HandleOxygenChanged(float current, float max)
     {
         if (oxygenFill) oxygenFill.fillAmount = (max <= 0f) ? 0f : current / max;
+
+        //update hud text
+        if (oxygenText)
+            oxygenText.text = $"{Mathf.CeilToInt(current)}/{Mathf.CeilToInt(max)}";
 
         // Fire once when oxygen drops below 25%
         if (!_oxygenTipFired && max > 0f && (current / max) < 0.25f)
