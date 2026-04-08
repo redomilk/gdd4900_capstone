@@ -150,3 +150,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55651ee4eab42724db7b391739daa6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AirPocket
+  shrinkSpeed: 0.5
+  regrowSpeed: 0.3
+  minSize: 0.05
+  miniBubblePrefab: {fileID: 1200780978706205521, guid: 72e529211aeb548509313b1b23cdd56f, type: 3}
+  ambientBubbleSpawnInterval: 0.2
+  ambientBubblesPerSpawn: 1
+  ambientSpawnRadius: 0.45
+  ambientBubbleScaleMin: 0.4
+  ambientBubbleScaleMax: 0.6
+  consumeBubbleSpawnInterval: 0.08
+  consumeBubblesPerSpawn: 2
+  consumeSpawnRadius: 0.35
+  consumeBubbleScaleMin: 0.08
+  consumeBubbleScaleMax: 0.16
