@@ -49,7 +49,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IStunnable
 
         isKnockbackable = gameObject.name.Contains("EnemyCharger") ||
                           gameObject.name.Contains("EnemyFloater") ||
-                          gameObject.name.Contains("EnemyExploder");
+                          gameObject.name.Contains("EnemyExploder") ||
+                          gameObject.name.Contains("EnemyBoss");
     }
 
     //-------------------IDamageable ------------------------

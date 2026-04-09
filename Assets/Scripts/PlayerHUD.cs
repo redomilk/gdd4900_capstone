@@ -19,6 +19,13 @@ public class PlayerHUD : MonoBehaviour
     [Header("Prompt Settings")]
     public Vector2 promptOffset = new Vector2(0f, 80f);
 
+    [Header("Shake Settings")]
+    public float shakeAmount = 5f;
+    public float shakeSpeed = 25f;
+
+    private Vector3 healthTextOriginalPos;
+    private Vector3 oxygenTextOriginalPos;
+
     GameObject player;
     private bool _oxygenTipFired;
 
@@ -36,6 +43,13 @@ public class PlayerHUD : MonoBehaviour
             promptText.alignment = TextAlignmentOptions.Center;
             promptText.gameObject.SetActive(false);
         }
+
+        //store hp/o2 vallue text position
+        if (healthText)
+            healthTextOriginalPos = healthText.rectTransform.localPosition;
+
+        if (oxygenText)
+            oxygenTextOriginalPos = oxygenText.rectTransform.localPosition;
     }
 
     void LateUpdate()
@@ -55,6 +69,12 @@ public class PlayerHUD : MonoBehaviour
             promptText.rectTransform.localPosition = localPoint + promptOffset;
             promptText.rectTransform.rotation = Quaternion.identity;
         }
+    }
+
+    void Update()
+    {
+        ShakeText(healthText, healthFill.fillAmount, healthTextOriginalPos);
+        ShakeText(oxygenText, oxygenFill.fillAmount, oxygenTextOriginalPos);
     }
 
     void OnEnable()
@@ -119,5 +139,25 @@ public class PlayerHUD : MonoBehaviour
     {
         if (promptText == null) return;
         promptText.gameObject.SetActive(false);
+    }
+
+    void ShakeText(TextMeshProUGUI text, float percent, Vector3 originalPos)
+    {
+        if (text == null) return;
+
+        // Only shake when below 25%
+        if (percent < 0.25f)
+        {
+            float strength = Mathf.Lerp(0f, shakeAmount, 1f - percent);
+
+            Vector2 offset = Random.insideUnitCircle * strength;
+
+            text.rectTransform.localPosition = originalPos + (Vector3)offset;
+        }
+        else
+        {
+            // Reset position when not low
+            text.rectTransform.localPosition = originalPos;
+        }
     }
 }
