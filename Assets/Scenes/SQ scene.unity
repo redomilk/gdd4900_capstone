@@ -59489,10 +59489,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   oxygenBubblePrefab: {fileID: 0}
   scrapPrefab: {fileID: 0}
-  maxHealth: 30
+  maxHealth: 300
   health: 0
-  knockbackForce: 5
-  knockbackDuration: 0.15
+  knockbackForce: 10.02
+  knockbackDuration: 0.35
 --- !u!1 &455534194
 GameObject:
   m_ObjectHideFlags: 0
