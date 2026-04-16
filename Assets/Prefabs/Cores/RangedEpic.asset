@@ -34,7 +34,7 @@ MonoBehaviour:
   explosionRadius: 0
   explosionDamage: 0
   chainTargets: 0
-  attackCooldownReduction: 0.75
+  attackCooldownReduction: 0.3
   dashCooldownReduction: 0
   dashSpeedMultiplier: 1
   airControlBonus: 0

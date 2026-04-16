@@ -22,7 +22,7 @@ MonoBehaviour:
   speedBonus: 0
   damageBonus: 0
   defenseBonus: 0
-  attackSpeedBonus: 0
+  attackSpeedBonus: 0.125
   meleeEffect: 0
   knockbackForce: 0
   bleedDPS: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
   explosionRadius: 0
   explosionDamage: 0
   chainTargets: 0
-  attackCooldownReduction: 0.125
+  attackCooldownReduction: 0
   dashCooldownReduction: 0
   dashSpeedMultiplier: 1
   airControlBonus: 0

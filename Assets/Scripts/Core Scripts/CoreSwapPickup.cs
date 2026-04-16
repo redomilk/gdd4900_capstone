@@ -12,6 +12,10 @@ public class CoreSwapPickup : MonoBehaviour
     SpriteRenderer sr;
     SpriteRenderer glowSr;
 
+    public float fallSpeed = 0.5f;
+    public float rayDistance = 0.5f;
+    public LayerMask wallLayer;
+
     // Safe getter - works even if called before Awake
     SpriteRenderer SR => sr != null ? sr : (sr = GetComponent<SpriteRenderer>());
 
@@ -84,6 +88,13 @@ public class CoreSwapPickup : MonoBehaviour
             float baseAlpha = RarityAlpha(coreData.rarity);
             float pulse = baseAlpha + Mathf.Sin(Time.time * 2f) * 0.08f;
             glowSr.color = WithAlpha(coreData.RarityColor(), Mathf.Clamp01(pulse));
+        }
+
+        //move down slowly (stop on wall)
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, wallLayer);
+        if (hit.collider == null)
+        {
+            transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
         }
     }
 
