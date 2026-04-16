@@ -257,7 +257,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7682764410720355737}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TooltipPopup, Assembly-CSharp
         m_MethodName: Close
         m_Mode: 1
@@ -281,7 +281,6 @@ GameObject:
   - component: {fileID: 7432207312803322312}
   - component: {fileID: 9169338258578999251}
   - component: {fileID: 7200938176660453170}
-  - component: {fileID: 7682764410720355737}
   m_Layer: 5
   m_Name: Tutorial Tooltips Canvas
   m_TagString: Untagged
@@ -372,25 +371,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7682764410720355737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5813909677489699932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fa471cd742724c90b9ca232b8ee87ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TooltipPopup
-  panel: {fileID: 6846357538563376541}
-  titleText: {fileID: 2696408534049744971}
-  bodyText: {fileID: 8958675748364181449}
-  closeButton: {fileID: 628393001823817033}
-  tooltipToggle: {fileID: 0}
-  fadeDuration: 0.15
-  tooltipsEnabled: 0
 --- !u!1 &6846357538563376541
 GameObject:
   m_ObjectHideFlags: 0

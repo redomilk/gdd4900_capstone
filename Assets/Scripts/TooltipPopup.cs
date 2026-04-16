@@ -12,7 +12,7 @@ public class TooltipPopup : MonoBehaviour
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI bodyText;
     public Button closeButton;
-    public Toggle tooltipToggle; // assign your Tooltip Toggle in Inspector
+    public Toggle tooltipToggle;
 
     [Header("Settings")]
     public float fadeDuration = 0.15f;
@@ -24,29 +24,38 @@ public class TooltipPopup : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         _cg = panel.GetComponent<CanvasGroup>();
         if (_cg == null) _cg = panel.AddComponent<CanvasGroup>();
-        closeButton.onClick.AddListener(Close);
-        panel.SetActive(false);
 
+        closeButton.onClick.RemoveAllListeners();
+        closeButton.onClick.AddListener(Close);
+
+        panel.SetActive(false);
         tooltipsEnabled = PlayerPrefs.GetInt(PrefsKey, 0) == 1;
 
-        // Sync toggle visual to match saved state without firing OnValueChanged
         if (tooltipToggle != null)
             tooltipToggle.SetIsOnWithoutNotify(tooltipsEnabled);
+
+        Debug.Log($"closeButton={closeButton}, listener count after wire={closeButton.onClick.GetPersistentEventCount()}");
     }
 
-    public bool IsOpen => panel.activeSelf;
+    public bool IsOpen => panel != null && panel.activeSelf;
 
     public void Show(string title, string body)
     {
-        if (!tooltipsEnabled) return;
+        if (!tooltipsEnabled || panel == null || closeButton == null) return;
         titleText.text = title;
         bodyText.text = body;
         panel.SetActive(true);
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         if (_fade != null) StopCoroutine(_fade);
         _fade = StartCoroutine(FadeIn());
     }
@@ -62,8 +71,8 @@ public class TooltipPopup : MonoBehaviour
 
     public void Close()
     {
-        panel.SetActive(false);
-        Time.timeScale = 1f;
+        if (panel != null) panel.SetActive(false);
+        //Time.timeScale = 1f;
     }
 
     public void SetTooltipsEnabled(bool enabled)

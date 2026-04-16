@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Skip all game wiring if we're on the menu scene
         if (scene.name == "Main Menu") return;
 
         PlayerStats ps = FindFirstObjectByType<PlayerStats>();
@@ -67,8 +66,6 @@ public class GameManager : MonoBehaviour
                     if (t.name == "OptionsPanel") pauseMenu.optionsPanel = t.gameObject;
                 }
             }
-
-            Debug.Log($"PauseMenu found. pausePanel: {pauseMenu.pausePanel}, optionsPanel: {pauseMenu.optionsPanel}");
 
             if (pauseMenu.pausePanel != null)
             {
@@ -131,7 +128,6 @@ public class GameManager : MonoBehaviour
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             healthLevel++;
-            Debug.Log($"Health level: {healthLevel}");
             PlayerStats ps = FindFirstObjectByType<PlayerStats>();
             if (ps != null) ApplyUpgrades(ps);
         }
@@ -139,7 +135,6 @@ public class GameManager : MonoBehaviour
         if (Keyboard.current.digit2Key.wasPressedThisFrame)
         {
             speedLevel++;
-            Debug.Log($"Speed level: {speedLevel}");
             PlayerDiveController dc = FindFirstObjectByType<PlayerDiveController>();
             if (dc != null) ApplySpeedUpgrade(dc);
         }
@@ -147,22 +142,17 @@ public class GameManager : MonoBehaviour
         if (Keyboard.current.digit3Key.wasPressedThisFrame)
         {
             oxygenLevel++;
-            Debug.Log($"Oxygen level: {oxygenLevel}");
             PlayerStats ps = FindFirstObjectByType<PlayerStats>();
             if (ps != null) ApplyUpgrades(ps);
         }
 
         if (Keyboard.current.digit4Key.wasPressedThisFrame)
-        {
             damageLevel++;
-            Debug.Log($"Damage level: {damageLevel}");
-        }
 
         if (Keyboard.current.digit0Key.wasPressedThisFrame)
         {
             PlayerStats ps = FindFirstObjectByType<PlayerStats>();
             PlayerDiveController dc = FindFirstObjectByType<PlayerDiveController>();
-
             Debug.Log("=== PLAYER STATS ===");
             Debug.Log($"Health: {ps?.health} / {ps?.maxHealth} (level {healthLevel})");
             Debug.Log($"Oxygen: {ps?.oxygen} / {ps?.maxOxygen} (level {oxygenLevel})");
