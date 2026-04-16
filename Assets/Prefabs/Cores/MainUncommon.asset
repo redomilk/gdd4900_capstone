@@ -15,7 +15,7 @@ MonoBehaviour:
   coreName: MainCore
   slot: 0
   rarity: 1
-  icon: {fileID: 1170115753450382605, guid: c97c08c0e39155d4186b923154aa6933, type: 3}
+  icon: {fileID: 7380656295102544298, guid: 337ab91c2423c4150b6cf477303564a7, type: 3}
   description: 
   healthBonus: 10
   oxygenBonus: 25

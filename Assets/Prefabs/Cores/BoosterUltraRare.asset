@@ -15,7 +15,7 @@ MonoBehaviour:
   coreName: Booster Core
   slot: 0
   rarity: 0
-  icon: {fileID: 1170115753450382605, guid: c97c08c0e39155d4186b923154aa6933, type: 3}
+  icon: {fileID: 21300000, guid: 7d2c251f10f914dd2a174b6856518b03, type: 3}
   description: 
   healthBonus: 0
   oxygenBonus: 0

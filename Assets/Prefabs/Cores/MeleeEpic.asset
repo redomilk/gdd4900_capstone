@@ -15,7 +15,7 @@ MonoBehaviour:
   coreName: Melee Core
   slot: 1
   rarity: 3
-  icon: {fileID: 1170115753450382605, guid: c97c08c0e39155d4186b923154aa6933, type: 3}
+  icon: {fileID: -1198015705628267088, guid: 8cd626d82684243ff9d6021b25f8a5f1, type: 3}
   description: 
   healthBonus: 0
   oxygenBonus: 0

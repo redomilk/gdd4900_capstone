@@ -7,6 +7,7 @@ public class ExtractProcess : MonoBehaviour
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private string hubSceneName = "HUB";
     private bool playerInZone = false;
+    bool _ExtractPromptFired;
 
     void Update()
     {

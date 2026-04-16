@@ -15,7 +15,7 @@ MonoBehaviour:
   coreName: Ranged Core
   slot: 2
   rarity: 1
-  icon: {fileID: 1170115753450382605, guid: c97c08c0e39155d4186b923154aa6933, type: 3}
+  icon: {fileID: -6594947174715801065, guid: 1d0e6f9ba38b1411e95470d41648b8bd, type: 3}
   description: 
   healthBonus: 0
   oxygenBonus: 0

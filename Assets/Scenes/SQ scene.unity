@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 24558423}
   - component: {fileID: 24558422}
   m_Layer: 5
-  m_Name: Boost Cooldown Overlay
+  m_Name: Melee Cooldown Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1245,6 +1245,7 @@ GameObject:
   - component: {fileID: 208745297}
   - component: {fileID: 208745302}
   - component: {fileID: 208745303}
+  - component: {fileID: 208745304}
   m_Layer: 5
   m_Name: Resource Bars
   m_TagString: Untagged
@@ -1395,6 +1396,21 @@ MonoBehaviour:
   rangedIcon: {fileID: 1722345238}
   boosterIcon: {fileID: 353363177}
   emptySprite: {fileID: 0}
+--- !u!114 &208745304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208745296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b406ddccdf9494a8a9fdb9c69631f857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackCooldownUI
+  playerAttack: {fileID: 262453691}
+  meleeOverlayImage: {fileID: 24558422}
+  rangedOverlayImage: {fileID: 1908286639}
 --- !u!1001 &212485487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1536,6 +1552,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &262453691 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4109668618825524546, guid: 7e083a8dc2732aa4991685da4ce6c891, type: 3}
+  m_PrefabInstance: {fileID: 8453922888970403490}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a70736ca519fcd4a853382b0aa09461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
 --- !u!1001 &270150899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76306,7 +76333,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &455498448
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -76918,9 +76945,8 @@ GameObject:
   - component: {fileID: 550283044}
   - component: {fileID: 550283047}
   - component: {fileID: 550283046}
-  - component: {fileID: 550283045}
   m_Layer: 5
-  m_Name: Melee Icon (1)
+  m_Name: Ranged Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76946,20 +76972,6 @@ RectTransform:
   m_AnchoredPosition: {x: -324.1, y: -112.4}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &550283045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550283043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 623be162d1a55b742ae9c2f39ef0a3b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoostCooldownUI
-  diveController: {fileID: 131384836}
-  overlayImage: {fileID: 1908286639}
 --- !u!114 &550283046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144715,7 +144727,6 @@ GameObject:
   - component: {fileID: 1881137536}
   - component: {fileID: 1881137539}
   - component: {fileID: 1881137538}
-  - component: {fileID: 1881137537}
   m_Layer: 5
   m_Name: Melee Icon
   m_TagString: Untagged
@@ -144743,20 +144754,6 @@ RectTransform:
   m_AnchoredPosition: {x: -324.1, y: -157.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1881137537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881137535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 623be162d1a55b742ae9c2f39ef0a3b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoostCooldownUI
-  diveController: {fileID: 131384836}
-  overlayImage: {fileID: 24558422}
 --- !u!114 &1881137538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145007,7 +145004,7 @@ GameObject:
   - component: {fileID: 1908286640}
   - component: {fileID: 1908286639}
   m_Layer: 5
-  m_Name: Boost Cooldown Overlay
+  m_Name: Ranged Cooldown Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
