@@ -19,7 +19,7 @@ public class CoreInventory : MonoBehaviour
     public GameObject corePickupPrefab;
 
     //--------- Public slot access --------------------------
-    void Start()
+    void Awake()
     {
         if (mainCore == null && defaultMainCore != null) Equip(defaultMainCore);
         if (meleeCore == null && defaultMeleeCore != null) Equip(defaultMeleeCore);
@@ -62,6 +62,7 @@ public class CoreInventory : MonoBehaviour
 
         // Notify HUD
         CoreHUDPanel.instance?.RefreshAll();
+        CoreHUDIcons.instance?.Refresh();
 
         return previous;
     }
