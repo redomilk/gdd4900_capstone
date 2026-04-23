@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class Bullet : MonoBehaviour
 {
     public float damage = 10f;
@@ -7,7 +8,9 @@ public class Bullet : MonoBehaviour
     [Header("Tracer")]
     public float tracerWidth = 0.05f;
     public float tracerTime = 0.15f;
-    public Color tracerColor = new Color(0f, 1f, 0.2f, 1f);  // green
+    public Color tracerColor = new Color(0f, 1f, 0.2f, 1f);
+
+    private bool reflected = false;
 
     void Start()
     {
@@ -23,7 +26,6 @@ public class Bullet : MonoBehaviour
         trail.endWidth = 0f;
         trail.material = new Material(Shader.Find("Sprites/Default"));
 
-        // Fade from full green to transparent
         Gradient gradient = new Gradient();
         gradient.SetKeys(
             new GradientColorKey[] {
@@ -36,17 +38,38 @@ public class Bullet : MonoBehaviour
             }
         );
         trail.colorGradient = gradient;
-        trail.sortingLayerName = "Default";  // change to match your bullet's sorting layer
+        trail.sortingLayerName = "Default";
         trail.sortingOrder = 1;
+    }
+
+    public void SetReflected(bool value)
+    {
+        reflected = value;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerStats player = other.GetComponent<PlayerStats>();
-        if (player != null)
+        if (!reflected)
         {
-            player.TakeDamageWithKnockback(damage, transform.position); 
-            Destroy(gameObject);
+            PlayerStats player = other.GetComponent<PlayerStats>();
+            if (player != null)
+            {
+                player.TakeDamageWithKnockback(damage, transform.position);
+                Destroy(gameObject);
+                return;
+            }
+        }
+        else
+        {
+            IDamageable damageable = other.GetComponent<IDamageable>()
+                                    ?? other.GetComponentInParent<IDamageable>();
+
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+                Destroy(gameObject);
+                return;
+            }
         }
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
