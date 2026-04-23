@@ -57,6 +57,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IStunnable
 
     public void TakeDamage(float amount)
     {
+        Debug.Log(gameObject.name + " TakeDamage called with " + amount);
         if (amount <= 0f) return;
         health = Mathf.Max(0f, health - amount);
         if (health <= 0f) Die();

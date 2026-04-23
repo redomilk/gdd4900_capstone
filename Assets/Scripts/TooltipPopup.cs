@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TooltipPopup : MonoBehaviour
 {
@@ -16,82 +18,204 @@ public class TooltipPopup : MonoBehaviour
 
     [Header("Settings")]
     public float fadeDuration = 0.15f;
+    public float autoCloseTime = 3f;
     public bool tooltipsEnabled = false;
 
-    private CanvasGroup _cg;
-    private Coroutine _fade;
-    private const string PrefsKey = "tooltips_enabled";
+    private CanvasGroup canvasGroup;
+    private Coroutine fadeCoroutine;
+    private Coroutine autoCloseCoroutine;
 
-    private void Awake()
+    private const string PrefsEnabledKey = "tooltips_enabled";
+    private static HashSet<string> shownKeys = new HashSet<string>();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetSessionState()
+    {
+        shownKeys.Clear();
+    }
+
+    void Awake()
     {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        _cg = panel.GetComponent<CanvasGroup>();
-        if (_cg == null) _cg = panel.AddComponent<CanvasGroup>();
+        tooltipsEnabled = PlayerPrefs.GetInt(PrefsEnabledKey, 0) == 1;
+        CacheSceneReferences();
+        ApplyToggleState();
+    }
 
-        closeButton.onClick.RemoveAllListeners();
-        closeButton.onClick.AddListener(Close);
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        panel.SetActive(false);
-        tooltipsEnabled = PlayerPrefs.GetInt(PrefsKey, 0) == 1;
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Close();
+        CacheSceneReferences();
+        ApplyToggleState();
+    }
+
+    void CacheSceneReferences()
+    {
+        if (panel == null)
+            panel = GameObject.Find("TooltipPanel");
+
+        if (panel != null)
+        {
+            if (canvasGroup == null)
+                canvasGroup = panel.GetComponent<CanvasGroup>();
+
+            if (canvasGroup == null)
+                canvasGroup = panel.AddComponent<CanvasGroup>();
+
+            panel.SetActive(false);
+            canvasGroup.alpha = 0f;
+
+            if (titleText == null)
+            {
+                Transform t = panel.transform.Find("TitleText");
+                if (t != null) titleText = t.GetComponent<TextMeshProUGUI>();
+            }
+
+            if (bodyText == null)
+            {
+                Transform t = panel.transform.Find("BodyText");
+                if (t != null) bodyText = t.GetComponent<TextMeshProUGUI>();
+            }
+
+            if (closeButton == null)
+            {
+                Transform t = panel.transform.Find("CloseButton");
+                if (t != null) closeButton = t.GetComponent<Button>();
+            }
+        }
+
+        Toggle[] toggles = FindObjectsByType<Toggle>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var t in toggles)
+        {
+            if (t.name == "TooltipToggle")
+            {
+                tooltipToggle = t;
+                break;
+            }
+        }
+
+        if (closeButton != null)
+        {
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(Close);
+        }
 
         if (tooltipToggle != null)
+        {
+            tooltipToggle.onValueChanged.RemoveAllListeners();
             tooltipToggle.SetIsOnWithoutNotify(tooltipsEnabled);
+            tooltipToggle.onValueChanged.AddListener(SetTooltipsEnabled);
+        }
+    }
 
-        Debug.Log($"closeButton={closeButton}, listener count after wire={closeButton.onClick.GetPersistentEventCount()}");
+    void ApplyToggleState()
+    {
+        if (tooltipToggle != null)
+            tooltipToggle.SetIsOnWithoutNotify(tooltipsEnabled);
     }
 
     public bool IsOpen => panel != null && panel.activeSelf;
 
     public void Show(string title, string body)
     {
-        if (!tooltipsEnabled || panel == null || closeButton == null) return;
+        if (!tooltipsEnabled) return;
+        if (panel == null || titleText == null || bodyText == null) return;
+
         titleText.text = title;
         bodyText.text = body;
+
         panel.SetActive(true);
-        //Time.timeScale = 0f;
-        if (_fade != null) StopCoroutine(_fade);
-        _fade = StartCoroutine(FadeIn());
+
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeIn());
+
+        if (autoCloseCoroutine != null)
+            StopCoroutine(autoCloseCoroutine);
+        autoCloseCoroutine = StartCoroutine(AutoClose());
     }
 
     public void ShowOnce(string key, string title, string body)
     {
         if (!tooltipsEnabled) return;
-        if (PlayerPrefs.GetInt(key, 0) == 1) return;
-        PlayerPrefs.SetInt(key, 1);
-        PlayerPrefs.Save();
+        if (string.IsNullOrEmpty(key)) return;
+        if (shownKeys.Contains(key)) return;
+
+        shownKeys.Add(key);
         Show(title, body);
     }
 
     public void Close()
     {
-        if (panel != null) panel.SetActive(false);
-        //Time.timeScale = 1f;
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+            fadeCoroutine = null;
+        }
+
+        if (autoCloseCoroutine != null)
+        {
+            StopCoroutine(autoCloseCoroutine);
+            autoCloseCoroutine = null;
+        }
+
+        if (canvasGroup != null)
+            canvasGroup.alpha = 0f;
+
+        if (panel != null)
+            panel.SetActive(false);
     }
 
     public void SetTooltipsEnabled(bool enabled)
     {
         tooltipsEnabled = enabled;
-        PlayerPrefs.SetInt(PrefsKey, enabled ? 1 : 0);
+        PlayerPrefs.SetInt(PrefsEnabledKey, enabled ? 1 : 0);
         PlayerPrefs.Save();
+
+        if (tooltipToggle != null)
+            tooltipToggle.SetIsOnWithoutNotify(tooltipsEnabled);
     }
 
     private IEnumerator FadeIn()
     {
-        _cg.alpha = 0f;
+        if (canvasGroup == null)
+            yield break;
+
+        canvasGroup.alpha = 0f;
         float elapsed = 0f;
+
         while (elapsed < fadeDuration)
         {
-            _cg.alpha = elapsed / fadeDuration;
+            canvasGroup.alpha = elapsed / fadeDuration;
             elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
-        _cg.alpha = 1f;
+
+        canvasGroup.alpha = 1f;
+        fadeCoroutine = null;
+    }
+
+    private IEnumerator AutoClose()
+    {
+        yield return new WaitForSecondsRealtime(autoCloseTime);
+        Close();
     }
 }

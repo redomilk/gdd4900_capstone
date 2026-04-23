@@ -5216,11 +5216,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
   slashPrefab: {fileID: 3803380387387900286, guid: a921cdbc2dbf7c74bbe95fae732b57d7, type: 3}
-  slashDistance: 1.11
+  slashDistance: 0.59
+  meleeCooldown: 0.4
   bulletPrefab: {fileID: 1169255131016583427, guid: 35427bc2b627a3b4da54035f4dea4c92, type: 3}
   firePoint: {fileID: 4390306218124722724}
   bulletSpeed: 6
-  attackCooldown: 0.25
+  rangedCooldown: 0.25
   currentWeapon: 0
 --- !u!114 &8747466914119910038
 MonoBehaviour:
@@ -5251,6 +5252,10 @@ MonoBehaviour:
   meleeCore: {fileID: 0}
   rangedCore: {fileID: 0}
   boosterCore: {fileID: 0}
+  defaultMainCore: {fileID: 0}
+  defaultMeleeCore: {fileID: 0}
+  defaultRangedCore: {fileID: 0}
+  defaultBoosterCore: {fileID: 0}
   corePickupPrefab: {fileID: 584385906306195580, guid: d7cd61dc9afe01f49a41d08fa8ecd740, type: 3}
 --- !u!114 &2808269479153044049
 MonoBehaviour:

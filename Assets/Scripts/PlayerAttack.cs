@@ -75,9 +75,10 @@ public class PlayerAttack : MonoBehaviour
         Vector3 spawnPos = transform.position + (Vector3)(dir * slashDistance);
 
         GameObject slash = Instantiate(slashPrefab, spawnPos, Quaternion.identity);
+        slash.transform.localScale = new Vector3(3f, 3f, 1f);
         SlashAttack slashAttack = slash.GetComponent<SlashAttack>();
         slashAttack.Initialize(dir);
-        slashAttack.SetPlayerPosition(transform.position);
+        slashAttack.SetPlayerCollider(GetComponent<Collider2D>());
         slashAttack.SetCoreEffects(coreEffects);
     }
 
