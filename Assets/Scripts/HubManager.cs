@@ -10,8 +10,8 @@ public class HubManager : MonoBehaviour
     void Start()
     {
         // Bank any remaining run scrap when returning to hub normally
-        if (GameManager.instance != null)
-            GameManager.instance.BankRunScrap();
+       // if (GameManager.instance != null)
+           // GameManager.instance.BankRunScrap();
 
         RefreshScrap();
     }
@@ -24,9 +24,8 @@ public class HubManager : MonoBehaviour
 
     public void GoToMainScene()
     {
-        // Reset run scrap for new run
         if (GameManager.instance != null)
-            GameManager.instance.runScrapCount = 0;
+            GameManager.instance.StartRun();
 
         SceneManager.LoadScene(mainSceneName);
     }

@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class ExtractProcess : MonoBehaviour
 {
     [SerializeField] private string playerTag = "Player";
-    [SerializeField] private string hubSceneName = "HUB";
     private bool playerInZone = false;
     bool _ExtractPromptFired;
 
@@ -37,8 +36,10 @@ public class ExtractProcess : MonoBehaviour
     {
         if (PlayerHUD.instance != null)
             PlayerHUD.instance.HidePrompt();
-        GameManager.instance.BankRunScrap();
-        CorePersistence.instance?.SaveCores();
-        SceneManager.LoadScene(hubSceneName);
+
+        if (GameManager.instance != null)
+            GameManager.instance.CompleteRunExtract();
+
+        SceneManager.LoadScene("Extract Scene");
     }
 }

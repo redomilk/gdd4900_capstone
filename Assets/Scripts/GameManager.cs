@@ -20,6 +20,15 @@ public class GameManager : MonoBehaviour
     public float speedPerLevel = 0.3f;
     public float damagePerLevel = 2f;
 
+    [Header("Run Summary")]
+    public int lastRunScrapCollected;
+    public int lastRunScrapLost;
+    public int lastRunScrapExtracted;
+    public float lastRunTime;
+    public bool lastRunExtracted;
+
+    private float runStartTime;
+
     void Awake()
     {
         if (instance == null)
@@ -82,6 +91,19 @@ public class GameManager : MonoBehaviour
         CorePersistence.instance?.RestoreCores();
     }
 
+    public void StartRun()
+    {
+        runScrapCount = 0;
+
+        lastRunScrapCollected = 0;
+        lastRunScrapLost = 0;
+        lastRunScrapExtracted = 0;
+        lastRunTime = 0f;
+        lastRunExtracted = false;
+
+        runStartTime = Time.time;
+    }
+
     public void ApplyUpgrades(PlayerStats ps)
     {
         ps.maxHealth = 100f + (healthLevel * hpPerLevel);
@@ -103,6 +125,7 @@ public class GameManager : MonoBehaviour
     public void AddScrap(int amount)
     {
         runScrapCount += amount;
+        lastRunScrapCollected += amount;
     }
 
     public void BankRunScrap()
@@ -119,6 +142,31 @@ public class GameManager : MonoBehaviour
         runScrapCount = 0;
         Debug.Log($"Lost {lost} run scrap on death, banked {kept}");
         CorePersistence.instance?.WipeCores();
+    }
+
+    public void CompleteRunExtract()
+    {
+        lastRunExtracted = true;
+        lastRunTime = Time.time - runStartTime;
+        lastRunScrapLost = 0;
+        lastRunScrapExtracted = runScrapCount;
+
+        BankRunScrap();
+        CorePersistence.instance?.SaveCores();
+    }
+
+    public void CompleteRunDeath()
+    {
+        lastRunExtracted = false;
+        lastRunTime = Time.time - runStartTime;
+
+        int lost = Mathf.FloorToInt(runScrapCount * 0.75f);
+        int kept = runScrapCount - lost;
+
+        lastRunScrapLost = lost;
+        lastRunScrapExtracted = kept;
+
+        DeathScrapPenalty();
     }
 
     void Update()
