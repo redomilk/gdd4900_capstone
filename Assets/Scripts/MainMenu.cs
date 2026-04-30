@@ -14,7 +14,16 @@ public class MainMenu : MonoBehaviour
     public float bubbleLingerTime = 2f;
     public float spawnWidth = 10f;
 
+    [Header("UI")]
+    public GameObject optionsPanel;
+    public GameObject mainMenuPanel;
+
+    [Header("Fade")]
+    public float panelFadeDuration = 0.15f;
+
     private bool gameStarted = false;
+
+    Coroutine panelFadeRoutine;
 
     void Start()
     {
@@ -23,8 +32,8 @@ public class MainMenu : MonoBehaviour
 
     public void OnPlayPressed()
     {
-        if (!gameStarted)
-            StartCoroutine(DiveTransition());
+       if (!gameStarted)
+           StartCoroutine(DiveTransition());
     }
 
     IEnumerator DiveTransition()
@@ -49,6 +58,20 @@ public class MainMenu : MonoBehaviour
             yield return null;
         }
         menuCanvas.SetActive(false);
+    }
+
+    public void OpenOptions()
+    {
+        if (mainMenuPanel == null || optionsPanel == null) return;
+
+        optionsPanel.SetActive(true);
+    }
+
+    public void CloseOptions()
+    {
+        if (mainMenuPanel == null || optionsPanel == null) return;
+
+        optionsPanel.SetActive(false);
     }
 
     IEnumerator ScrollCamera()
