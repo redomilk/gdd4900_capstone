@@ -21,6 +21,22 @@ public class MainMenu : MonoBehaviour
     [Header("Fade")]
     public float panelFadeDuration = 0.15f;
 
+    [Header("Save Slots")]
+    public GameObject saveSlotPanel;
+
+    public Button slot1Button;
+    public Button slot2Button;
+    public Button slot3Button;
+    public Button savePanelPlayButton;
+
+    public Color normalSlotColor = Color.white;
+    public Color selectedSlotColor = Color.yellow;
+
+    public Color playDisabledColor = Color.gray;
+    public Color playEnabledColor = Color.white;
+
+    private int selectedSaveSlot = -1;
+
     private bool gameStarted = false;
 
     Coroutine panelFadeRoutine;
@@ -28,12 +44,27 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         menuCanvas.SetActive(true);
+
+        if (saveSlotPanel != null)
+            saveSlotPanel.SetActive(false);
+
+        selectedSaveSlot = -1;
+
+        if (savePanelPlayButton != null)
+        {
+            savePanelPlayButton.interactable = false;
+            SetButtonColor(savePanelPlayButton, playDisabledColor);
+        }
+
+        RefreshSlotHighlights();
     }
 
     public void OnPlayPressed()
     {
-       if (!gameStarted)
-           StartCoroutine(DiveTransition());
+        if (gameStarted) return;
+
+        if (saveSlotPanel != null)
+            saveSlotPanel.SetActive(true);
     }
 
     IEnumerator DiveTransition()
@@ -152,5 +183,49 @@ public class MainMenu : MonoBehaviour
             yield return null;
         }
         Destroy(bubble);
+    }
+
+    //save menu ui functions
+    public void SelectSaveSlot(int slot)
+    {
+        if (gameStarted) return;
+
+        selectedSaveSlot = slot;
+
+        RefreshSlotHighlights();
+
+        if (savePanelPlayButton != null)
+        {
+            savePanelPlayButton.interactable = true;
+            SetButtonColor(savePanelPlayButton, playEnabledColor);
+        }
+    }
+
+    public void OnSavePanelPlayPressed()
+    {
+        if (gameStarted) return;
+        if (selectedSaveSlot < 1) return;
+
+        GameManager.instance.LoadGame(selectedSaveSlot);
+
+        StartCoroutine(DiveTransition());
+    }
+
+    void RefreshSlotHighlights()
+    {
+        SetButtonColor(slot1Button, selectedSaveSlot == 1 ? selectedSlotColor : normalSlotColor);
+        SetButtonColor(slot2Button, selectedSaveSlot == 2 ? selectedSlotColor : normalSlotColor);
+        SetButtonColor(slot3Button, selectedSaveSlot == 3 ? selectedSlotColor : normalSlotColor);
+    }
+
+    void SetButtonColor(Button button, Color color)
+    {
+        if (button == null) return;
+
+        ColorBlock colors = button.colors;
+        colors.normalColor = color;
+        colors.selectedColor = color;
+        colors.highlightedColor = color;
+        button.colors = colors;
     }
 }

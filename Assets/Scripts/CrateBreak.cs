@@ -63,6 +63,8 @@ public class CrateBreak : MonoBehaviour, IDamageable
 
     void SpawnCoreDrop()
     {
+        Debug.Log("Crate broke. Trying to spawn core.");
+
         if (corePickupPrefab == null)
         {
             Debug.LogWarning("CrateBreak: corePickupPrefab is not assigned.");
@@ -75,7 +77,9 @@ public class CrateBreak : MonoBehaviour, IDamageable
             spawnTable = spawnTableObject.GetComponent<CoreSpawnTable>();
 
         if (spawnTable == null)
-            spawnTable = FindFirstObjectByType<CoreSpawnTable>();
+            spawnTable = FindFirstObjectByType<CoreSpawnTable>(FindObjectsInactive.Include);
+
+        Debug.Log("CoreSpawnTable found: " + (spawnTable != null));
 
         if (spawnTable == null)
         {
@@ -84,6 +88,12 @@ public class CrateBreak : MonoBehaviour, IDamageable
         }
 
         CoreData rolled = spawnTable.RollCore(transform.position.y);
+
+        if (rolled == null)
+        {
+            Debug.LogWarning("CrateBreak: RollCore returned null.");
+            return;
+        }
 
         GameObject go = Instantiate(corePickupPrefab, transform.position, Quaternion.identity);
         CoreSwapPickup pickup = go.GetComponent<CoreSwapPickup>();
@@ -95,19 +105,6 @@ public class CrateBreak : MonoBehaviour, IDamageable
         }
 
         pickup.Initialize(rolled);
-
-        if (!shownCoreTipThisSession && TooltipPopup.Instance != null)
-        {
-            shownCoreTipThisSession = true;
-
-            TooltipPopup.Instance.Show(
-                "Core Dropped!",
-                "Cores modify your weapon behaviour.\n\n" +
-                "Press E to swap to the dropped core.\n\n" +
-                "Only one core can be equipped at a time.\n\n" +
-                "Press Tab to view your core inventory."
-            );
-        }
     }
 
     System.Collections.IEnumerator HitFlash()

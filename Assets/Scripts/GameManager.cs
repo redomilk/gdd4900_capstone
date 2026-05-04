@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private float runStartTime;
 
+    public int currentSaveSlot = 1;
+
     void Awake()
     {
         if (instance == null)
@@ -54,7 +57,14 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Time.timeScale = 1f;
+
         if (scene.name == "Main Menu") return;
+
+        if (scene.name == "SQ scene")
+        {
+            StartRun();
+        }
 
         PlayerStats ps = FindFirstObjectByType<PlayerStats>();
         if (ps != null) ApplyUpgrades(ps);
@@ -62,33 +72,7 @@ public class GameManager : MonoBehaviour
         PlayerDiveController dc = FindFirstObjectByType<PlayerDiveController>();
         if (dc != null) ApplySpeedUpgrade(dc);
 
-        PauseMenu pauseMenu = FindFirstObjectByType<PauseMenu>();
-        if (pauseMenu != null)
-        {
-            Canvas[] allCanvases = FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            foreach (Canvas canvas in allCanvases)
-            {
-                Transform[] allChildren = canvas.GetComponentsInChildren<Transform>(true);
-                foreach (Transform t in allChildren)
-                {
-                    if (t.name == "PausePanel") pauseMenu.pausePanel = t.gameObject;
-                    if (t.name == "OptionsPanel") pauseMenu.optionsPanel = t.gameObject;
-                }
-            }
-
-            if (pauseMenu.pausePanel != null)
-            {
-                CanvasGroup cg = pauseMenu.pausePanel.GetComponent<CanvasGroup>();
-                if (cg != null)
-                {
-                    cg.interactable = true;
-                    cg.alpha = 1f;
-                }
-                pauseMenu.RewireButtons();
-            }
-        }
-
-        CorePersistence.instance?.RestoreCores();
+        //CorePersistence.instance?.RestoreCores();
     }
 
     public void StartRun()
@@ -152,7 +136,10 @@ public class GameManager : MonoBehaviour
         lastRunScrapExtracted = runScrapCount;
 
         BankRunScrap();
+
         CorePersistence.instance?.SaveCores();
+
+        SaveGame();
     }
 
     public void CompleteRunDeath()
@@ -167,6 +154,8 @@ public class GameManager : MonoBehaviour
         lastRunScrapExtracted = kept;
 
         DeathScrapPenalty();
+
+        SaveGame();
     }
 
     void Update()
@@ -210,5 +199,33 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Scrap stash: {scrapCount} | Run scrap: {runScrapCount}");
             Debug.Log("====================");
         }
+    }
+
+    //Save Manager stuff
+    public void SaveGame()
+    {
+        SaveData data = new SaveData
+        {
+            scrapCount = scrapCount,
+            healthLevel = healthLevel,
+            speedLevel = speedLevel,
+            oxygenLevel = oxygenLevel,
+            damageLevel = damageLevel
+        };
+
+        SaveManager.Save(data, currentSaveSlot);
+    }
+
+    public void LoadGame(int slot)
+    {
+        currentSaveSlot = slot;
+
+        SaveData data = SaveManager.Load(slot);
+
+        scrapCount = data.scrapCount;
+        healthLevel = data.healthLevel;
+        speedLevel = data.speedLevel;
+        oxygenLevel = data.oxygenLevel;
+        damageLevel = data.damageLevel;
     }
 }
