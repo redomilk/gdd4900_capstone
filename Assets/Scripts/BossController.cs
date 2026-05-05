@@ -26,16 +26,29 @@ public class BossController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
         EnemyHealth eh = GetComponent<EnemyHealth>();
         if (eh != null) eh.maxHealth = 300f;
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObj == null)
+            Debug.LogWarning("Boss could not find Player");
+        else
+            player = playerObj.transform;
     }
 
     void Update()
     {
-        if (player == null) return;
+        if (player != null)
+        {
+            HandleMovement();
+        }
+        else
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
 
-        HandleMovement();
         HandleSpawning();
 
         if (contactTimer > 0f)
@@ -70,22 +83,32 @@ public class BossController : MonoBehaviour
 
     void SpawnEnemies()
     {
-        if (enemyPrefabs.Length == 0 || spawnPoints.Length == 0) return;
+        if (enemyPrefabs == null || enemyPrefabs.Length == 0)
+        {
+            Debug.LogWarning("No enemy prefabs assigned to boss.");
+            return;
+        }
+
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogWarning("No spawn points assigned to boss.");
+            return;
+        }
 
         for (int i = 0; i < enemiesPerSpawn; i++)
         {
             if (currentSpawnedCount >= maxSpawnedEnemies) break;
 
-            // pick a random spawn point and random enemy prefab
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
             GameObject prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
 
             GameObject spawned = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
             currentSpawnedCount++;
 
-            // track when this enemy dies so we can decrement the count
             BossSpawnedEnemy tracker = spawned.AddComponent<BossSpawnedEnemy>();
             tracker.boss = this;
+
+            Debug.Log("Boss spawned enemy: " + prefab.name);
         }
     }
 

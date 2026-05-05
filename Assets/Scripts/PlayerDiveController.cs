@@ -263,9 +263,14 @@ public class PlayerDiveController : MonoBehaviour
 
     void RotateTowardMouse()
     {
+        if (Camera.main == null || Mouse.current == null) return;
+
         Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Vector2 direction = mouseWorld - (Vector2)transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+        Vector2 direction = mouseWorld - rb.position;
+
+        if (direction.sqrMagnitude < 0.001f) return;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+        rb.MoveRotation(angle);
     }
 }
