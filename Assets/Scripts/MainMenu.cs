@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class MainMenu : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class MainMenu : MonoBehaviour
     [Header("UI")]
     public GameObject optionsPanel;
     public GameObject mainMenuPanel;
+
+    [Header("Screen Fade")]
+    public Image fadeImage;
+    public float fadeToBlackDuration = 1f;
 
     [Header("Fade")]
     public float panelFadeDuration = 0.15f;
@@ -70,10 +75,21 @@ public class MainMenu : MonoBehaviour
     IEnumerator DiveTransition()
     {
         gameStarted = true;
+
+        //play ubbles sfx
+        RuntimeManager.PlayOneShot("event:/SFX_menuBubbles");
+
         yield return StartCoroutine(FadeOutMenu());
+
         StartCoroutine(ScrollCamera());
         StartCoroutine(SpawnBubbles(scrollDuration + bubbleLingerTime));
-        yield return new WaitForSeconds(scrollDuration + bubbleLingerTime);
+
+        // wait until near the end of the dive
+        yield return new WaitForSeconds(scrollDuration + bubbleLingerTime - fadeToBlackDuration);
+
+        // fade screen to black
+        yield return StartCoroutine(FadeToBlack());
+
         SceneManager.LoadScene("SQ scene");
     }
 
@@ -227,5 +243,36 @@ public class MainMenu : MonoBehaviour
         colors.selectedColor = color;
         colors.highlightedColor = color;
         button.colors = colors;
+    }
+
+    IEnumerator FadeToBlack()
+    {
+        if (fadeImage == null)
+        {
+            Debug.LogWarning("Fade Image is not assigned!");
+            yield break;
+        }
+
+        fadeImage.gameObject.SetActive(true);
+        fadeImage.transform.SetAsLastSibling();
+
+        Color c = fadeImage.color;
+        c.r = 0f;
+        c.g = 0f;
+        c.b = 0f;
+        c.a = 0f;
+        fadeImage.color = c;
+
+        float t = 0f;
+
+        while (t < fadeToBlackDuration)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Clamp01(t / fadeToBlackDuration);
+            fadeImage.color = new Color(0f, 0f, 0f, alpha);
+            yield return null;
+        }
+
+        fadeImage.color = Color.black;
     }
 }

@@ -15,26 +15,45 @@ public class OptionsMenu : MonoBehaviour
 
     void Awake()
     {
-        masterBus = RuntimeManager.GetBus("bus:/");
+        if (darknessSlider != null)
+            darknessSlider.onValueChanged.AddListener(OnDarknessChanged);
 
-        // Hook up listeners in code instead of Inspector
-        darknessSlider.onValueChanged.AddListener(OnDarknessChanged);
-        volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
     }
 
     void OnEnable()
     {
+        GetMasterBusIfNeeded();
+
         depthLighting = FindFirstObjectByType<DepthLighting>();
 
-        darknessSlider.onValueChanged.RemoveListener(OnDarknessChanged);
-        volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
+        if (darknessSlider != null)
+            darknessSlider.onValueChanged.RemoveListener(OnDarknessChanged);
 
-        darknessSlider.value = depthLighting != null ? depthLighting.darknessStrength : 1f;
-        masterBus.getVolume(out float vol);
-        volumeSlider.value = vol;
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
 
-        darknessSlider.onValueChanged.AddListener(OnDarknessChanged);
-        volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        if (darknessSlider != null)
+            darknessSlider.value = depthLighting != null ? depthLighting.darknessStrength : 1f;
+
+        if (volumeSlider != null)
+        {
+            masterBus.getVolume(out float vol);
+            volumeSlider.value = vol;
+        }
+
+        if (darknessSlider != null)
+            darknessSlider.onValueChanged.AddListener(OnDarknessChanged);
+
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+    }
+
+    public void OnVolumeChanged(float value)
+    {
+        GetMasterBusIfNeeded();
+        masterBus.setVolume(value);
     }
 
     public void OnDarknessChanged(float value)
@@ -45,8 +64,11 @@ public class OptionsMenu : MonoBehaviour
             depthLighting.darknessStrength = value;
     }
 
-    public void OnVolumeChanged(float value)
+    void GetMasterBusIfNeeded()
     {
-        masterBus.setVolume(value);
+        if (!masterBus.hasHandle())
+        {
+            masterBus = RuntimeManager.GetBus("bus:/");
+        }
     }
 }

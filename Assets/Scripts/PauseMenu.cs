@@ -97,23 +97,17 @@ public class PauseMenu : MonoBehaviour
         WireButton(pausePanel, "ResumeButton", Resume);
         WireButton(pausePanel, "OptionsButton", OpenOptions);
         WireButton(pausePanel, "ControlsButton", OpenControls);
-        WireButton(pausePanel, "RestartButton", RestartScene);
+        WireButton(pausePanel, "MainMenuButton", GoToMainMenu);
         WireButton(pausePanel, "QuitButton", QuitGame);
 
         if (optionsPanel != null)
         {
-            bool wasActive = optionsPanel.activeSelf;
-            optionsPanel.SetActive(true);
             WireButton(optionsPanel, "backButton", CloseOptions);
-            optionsPanel.SetActive(wasActive);
         }
 
         if (controlsPanel != null)
         {
-            bool wasActive = controlsPanel.activeSelf;
-            controlsPanel.SetActive(true);
             WireButton(controlsPanel, "backButton", CloseControls);
-            controlsPanel.SetActive(wasActive);
         }
     }
 
@@ -328,11 +322,12 @@ public class PauseMenu : MonoBehaviour
         group.alpha = alpha;
     }
 
-    public void RestartScene()
+    public void GoToMainMenu()
     {
         Resume();
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        AudioManager.Instance.SetMusicState("Menu");
+        SceneManager.LoadScene("Main Menu");
     }
 
     public void QuitGame()
