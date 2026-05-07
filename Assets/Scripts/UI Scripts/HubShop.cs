@@ -23,7 +23,6 @@ public class HubShop : MonoBehaviour
     public TextMeshProUGUI spdCostText;
 
     const int maxLevel = 10;
-    const int costPerLevel = 20;
 
     void Start()
     {
@@ -50,7 +49,12 @@ public class HubShop : MonoBehaviour
     {
         if (bar != null) bar.fillAmount = (float)currentLevel / maxLevel;
         if (levelText != null) levelText.text = upgradeName + " Level " + currentLevel;
-        if (costText != null) costText.text = currentLevel >= maxLevel ? "MAXED" : "Cost " + costPerLevel;
+        if (costText != null)
+        {
+            costText.text = currentLevel >= maxLevel
+                ? "MAXED"
+                : "Cost " + GetUpgradeCost(currentLevel);
+        }
     }
 
     public void BuyHPUpgrade()
@@ -73,11 +77,32 @@ public class HubShop : MonoBehaviour
 
     bool TryPurchase(ref int level)
     {
-        if (GameManager.instance == null) return false;
-        if (level >= maxLevel) { Debug.Log("Already maxed!"); return false; }
-        if (GameManager.instance.scrapCount < costPerLevel) { Debug.Log("Not enough scrap!"); return false; }
-        GameManager.instance.scrapCount -= costPerLevel;
+        if (GameManager.instance == null)
+            return false;
+
+        if (level >= maxLevel)
+        {
+           // Debug.Log("Already maxed!");
+            return false;
+        }
+
+        int cost = GetUpgradeCost(level);
+
+        if (GameManager.instance.scrapCount < cost)
+        {
+            //Debug.Log("Not enough scrap!");
+            return false;
+        }
+
+        GameManager.instance.scrapCount -= cost;
+
         level++;
+
         return true;
+    }
+
+    int GetUpgradeCost(int level)
+    {
+        return 20 + (level * 10);
     }
 }

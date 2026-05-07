@@ -5,6 +5,7 @@ public class PlayerAttack : MonoBehaviour
 {
     [Header("Melee")]
     public GameObject slashPrefab;
+    public Transform meleePoint;
     public float slashDistance = 0.8f;
     public float meleeCooldown = 0.4f;
 
@@ -72,10 +73,13 @@ public class PlayerAttack : MonoBehaviour
         mouseWorld.z = 0f;
 
         Vector2 dir = (mouseWorld - transform.position).normalized;
-        Vector3 spawnPos = transform.position + (Vector3)(dir * slashDistance);
+
+        Vector3 origin = meleePoint != null ? meleePoint.position : transform.position;
+        Vector3 spawnPos = origin + (Vector3)(dir * slashDistance);
 
         GameObject slash = Instantiate(slashPrefab, spawnPos, Quaternion.identity);
         slash.transform.localScale = new Vector3(3f, 3f, 1f);
+
         SlashAttack slashAttack = slash.GetComponent<SlashAttack>();
         slashAttack.Initialize(dir);
         slashAttack.SetPlayerCollider(GetComponent<Collider2D>());

@@ -15,18 +15,15 @@ public class OptionsMenu : MonoBehaviour
 
     void Awake()
     {
-        if (darknessSlider != null)
-            darknessSlider.onValueChanged.AddListener(OnDarknessChanged);
-
-        if (volumeSlider != null)
-            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        GetMasterBusIfNeeded();
     }
 
     void OnEnable()
     {
         GetMasterBusIfNeeded();
 
-        depthLighting = FindFirstObjectByType<DepthLighting>();
+        if (depthLighting == null)
+            depthLighting = FindFirstObjectByType<DepthLighting>();
 
         if (darknessSlider != null)
             darknessSlider.onValueChanged.RemoveListener(OnDarknessChanged);
@@ -34,8 +31,11 @@ public class OptionsMenu : MonoBehaviour
         if (volumeSlider != null)
             volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
 
+        float savedDarkness = PlayerPrefs.GetFloat("DarknessStrength", 1f);
+        float savedVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+
         if (darknessSlider != null)
-            darknessSlider.value = depthLighting != null ? depthLighting.darknessStrength : 1f;
+            darknessSlider.value = depthLighting != null ? depthLighting.darknessStrength : savedDarkness;
 
         if (volumeSlider != null)
         {
@@ -53,13 +53,20 @@ public class OptionsMenu : MonoBehaviour
     public void OnVolumeChanged(float value)
     {
         GetMasterBusIfNeeded();
+
         masterBus.setVolume(value);
+        PlayerPrefs.SetFloat("MasterVolume", value);
+        PlayerPrefs.Save();
     }
 
     public void OnDarknessChanged(float value)
     {
+        PlayerPrefs.SetFloat("DarknessStrength", value);
+        PlayerPrefs.Save();
+
         if (depthLighting == null)
             depthLighting = FindFirstObjectByType<DepthLighting>();
+
         if (depthLighting != null)
             depthLighting.darknessStrength = value;
     }
@@ -67,8 +74,6 @@ public class OptionsMenu : MonoBehaviour
     void GetMasterBusIfNeeded()
     {
         if (!masterBus.hasHandle())
-        {
             masterBus = RuntimeManager.GetBus("bus:/");
-        }
     }
 }

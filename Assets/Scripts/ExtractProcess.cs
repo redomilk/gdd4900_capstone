@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class ExtractProcess : MonoBehaviour
 {
@@ -53,11 +54,18 @@ public class ExtractProcess : MonoBehaviour
 
     private void Extract()
     {
+        StartCoroutine(ExtractSequence());
+    }
+
+    IEnumerator ExtractSequence()
+    {
         if (PlayerHUD.instance != null)
             PlayerHUD.instance.HidePrompt();
 
         if (GameManager.instance != null)
             GameManager.instance.CompleteRunExtract();
+
+        yield return StartCoroutine(ScreenFader.Instance.FadeToBlack(1f));
 
         SceneManager.LoadScene("Extract Scene");
     }

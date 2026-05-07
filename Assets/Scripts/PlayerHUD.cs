@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class PlayerHUD : MonoBehaviour
 
     GameObject player;
     private bool _oxygenTipFired;
+
+    private bool deathStarted = false;
 
     void Awake()
     {
@@ -122,8 +125,19 @@ public class PlayerHUD : MonoBehaviour
 
     void HandlePlayerDied()
     {
+        if (deathStarted) return;
+        deathStarted = true;
+
+        StartCoroutine(PlayerDeathSequence());
+    }
+
+    IEnumerator PlayerDeathSequence()
+    {
         if (GameManager.instance != null)
             GameManager.instance.CompleteRunDeath();
+
+        if (ScreenFader.Instance != null)
+            yield return StartCoroutine(ScreenFader.Instance.FadeToBlack(1f));
 
         SceneManager.LoadScene("Extract Scene");
     }

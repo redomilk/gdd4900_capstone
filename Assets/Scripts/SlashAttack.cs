@@ -66,4 +66,14 @@ public class SlashAttack : MonoBehaviour
             bullet.SetReflected(true);
         }
     }
+
+    //hitbox testing
+    void OnDrawGizmos()
+    {
+        Collider2D col = GetComponent<Collider2D>();
+        if (col == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(col.bounds.center, col.bounds.size);
+    }
 }

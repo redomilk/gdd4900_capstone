@@ -121,6 +121,29 @@ public class MainMenu : MonoBehaviour
         optionsPanel.SetActive(false);
     }
 
+    public void CloseSavePanel()
+    {
+        if (saveSlotPanel != null)
+            saveSlotPanel.SetActive(false);
+
+        selectedSaveSlot = -1;
+
+        if (savePanelPlayButton != null)
+        {
+            savePanelPlayButton.interactable = false;
+            SetButtonColor(savePanelPlayButton, playDisabledColor);
+        }
+
+        RefreshSlotHighlights();
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quit Game");
+
+        Application.Quit();
+    }
+
     IEnumerator ScrollCamera()
     {
         Vector3 startPos = Camera.main.transform.position;

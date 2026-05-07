@@ -27,6 +27,7 @@ public class DepthLighting : MonoBehaviour
         globalLight = GetComponent<Light2D>();
     }
 
+
     void Update()
     {
         if (depthMarker == null || globalLight == null) return;
@@ -42,5 +43,6 @@ public class DepthLighting : MonoBehaviour
     {
         Debug.Log($"Starting Y: {depthMarker.position.y}");
         Debug.Log($"Starting t: {Mathf.Clamp01(Mathf.InverseLerp(shallowDepth, deepDepth, depthMarker.position.y))}");
+        darknessStrength = PlayerPrefs.GetFloat("DarknessStrength", darknessStrength);
     }
 }

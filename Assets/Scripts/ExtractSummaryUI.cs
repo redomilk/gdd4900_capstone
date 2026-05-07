@@ -19,7 +19,7 @@ public class ExtractSummaryUI : MonoBehaviour
         var gm = GameManager.instance;
         if (gm == null) return;
 
-        headerText.text = gm.lastRunExtracted ? "EXTRACT SUCCESS" : "DIVE STATS";
+        headerText.text = gm.lastRunExtracted ? "EXTRACT SUCCESS" : "DIVE FAILED";
 
         scrapCollectedValue.text = gm.lastRunScrapCollected.ToString();
         scrapLostValue.text = gm.lastRunScrapLost.ToString();

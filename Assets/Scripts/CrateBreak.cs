@@ -57,6 +57,20 @@ public class CrateBreak : MonoBehaviour, IDamageable
         if (!string.IsNullOrEmpty(breakSoundEvent))
             FMODUnity.RuntimeManager.PlayOneShot(breakSoundEvent, transform.position);
 
+        if (!shownCoreTipThisSession && TooltipPopup.Instance != null)
+        {
+            shownCoreTipThisSession = true;
+
+            TooltipPopup.Instance.ShowOnce(
+                "tip_augments",
+                "Augment Crates",
+                "Broken crates can contain augments.\n\n" +
+                "Augments grant powerful passive effects.\n\n" +
+                "Press <color=yellow>E</color> near an augment to equip\n\n" +
+                "Press <color=yellow>TAB</color> to view current cores."
+            );
+        }
+
         SpawnCoreDrop();
         Destroy(gameObject);
     }
