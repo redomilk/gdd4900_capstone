@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 /// Manages the player's 4 equipped cores and applies their stat/effect bonuses.
 public class CoreInventory : MonoBehaviour
@@ -21,10 +22,30 @@ public class CoreInventory : MonoBehaviour
     //--------- Public slot access --------------------------
     void Awake()
     {
-        if (mainCore == null && defaultMainCore != null) Equip(defaultMainCore);
-        if (meleeCore == null && defaultMeleeCore != null) Equip(defaultMeleeCore);
-        if (rangedCore == null && defaultRangedCore != null) Equip(defaultRangedCore);
-        if (boosterCore == null && defaultBoosterCore != null) Equip(defaultBoosterCore);
+        bool hasSaved =
+            CorePersistence.instance != null &&
+            (
+                !string.IsNullOrEmpty(CorePersistence.instance.savedMainCore) ||
+                !string.IsNullOrEmpty(CorePersistence.instance.savedMeleeCore) ||
+                !string.IsNullOrEmpty(CorePersistence.instance.savedRangedCore) ||
+                !string.IsNullOrEmpty(CorePersistence.instance.savedBoosterCore)
+            );
+        //equpt default cores if none
+        if (!hasSaved)
+        {
+            if (mainCore == null && defaultMainCore != null) Equip(defaultMainCore);
+            if (meleeCore == null && defaultMeleeCore != null) Equip(defaultMeleeCore);
+            if (rangedCore == null && defaultRangedCore != null) Equip(defaultRangedCore);
+            if (boosterCore == null && defaultBoosterCore != null) Equip(defaultBoosterCore);
+        }
+    }
+
+    IEnumerator Start()
+    {
+        yield return null;
+
+        if (CorePersistence.instance != null)
+            CorePersistence.instance.RestoreCores();
     }
 
 

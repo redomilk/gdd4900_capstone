@@ -8,6 +8,7 @@ public class ExtractProcess : MonoBehaviour
     [SerializeField] private string playerTag = "Player";
     private bool playerInZone = false;
     private static bool shownExtractTipThisSession = false;
+    private bool extractionStarted = false;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void ResetSessionFlag()
@@ -54,6 +55,9 @@ public class ExtractProcess : MonoBehaviour
 
     private void Extract()
     {
+        if (extractionStarted) return;
+        extractionStarted = true;
+
         StartCoroutine(ExtractSequence());
     }
 
@@ -61,6 +65,9 @@ public class ExtractProcess : MonoBehaviour
     {
         if (PlayerHUD.instance != null)
             PlayerHUD.instance.HidePrompt();
+
+        if (CorePersistence.instance != null)
+            CorePersistence.instance.SaveCores();
 
         if (GameManager.instance != null)
             GameManager.instance.CompleteRunExtract();

@@ -67,6 +67,11 @@ public class TooltipPopup : MonoBehaviour
         ApplyToggleState();
     }
 
+    public static void ResetShownTips()
+    {
+        shownKeys.Clear();
+    }
+
     void CacheSceneReferences()
     {
         if (panel == null)
